@@ -15,6 +15,7 @@ class _RegisterPageState extends State<RegisterView> {
 
   late String _nik, _namaLengkap, _desa, _rt, _rw, _noTelepon, _alamatLengkap;
   PuskesmasModel? _selectedPuskesmas;
+  bool _isLoading = false;
 
   List<PuskesmasModel> _puskesmasList = [];
 
@@ -43,10 +44,13 @@ class _RegisterPageState extends State<RegisterView> {
         puskesmasTerdekat: _selectedPuskesmas!.id.toString(),
       );
 
-      _controller.register(user).then((_) {
-        Navigator.of(context).pushReplacementNamed('/register');
-      }).catchError((error) {
-        // Handle error
+      setState(() {
+        _isLoading = true;
+      });
+      _controller.register(user, context).whenComplete(() {
+        setState(() {
+          _isLoading = false;
+        });
       });
     }
   }
@@ -139,7 +143,7 @@ class _RegisterPageState extends State<RegisterView> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: _register,
+                        onPressed: _isLoading ? null : _register,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF12d516),
                           padding: const EdgeInsets.symmetric(vertical: 14),
@@ -147,16 +151,24 @@ class _RegisterPageState extends State<RegisterView> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: const Text(
-                          'Registrasi',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
+                        child: _isLoading
+                            ? const SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              )
+                            : const Text(
+                                'Registrasi',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
