@@ -1,3 +1,4 @@
+import 'package:client/views/home_view.dart';
 import 'package:client/views/onboarding_view.dart';
 import 'package:client/views/register_view.dart';
 import 'package:client/views/splash_view.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/onboarding': (context) => const OnboardingView(),
         '/register': (context) => const RegisterView(),
+        '/home': (context) => const HomeView(),
       },
     );
   }
