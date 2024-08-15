@@ -32,9 +32,9 @@ class OnboardingController {
     Timer(const Duration(seconds: 2), () {
       // WALIK
       if (hasKeluargaData != null) {
-        Navigator.of(context).pushReplacementNamed('/login-keluarga');
-      } else {
         Navigator.of(context).pushReplacementNamed('/home-keluarga');
+      } else {
+        Navigator.of(context).pushReplacementNamed('/login-keluarga');
       }
     });
   }
