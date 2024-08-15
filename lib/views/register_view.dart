@@ -182,6 +182,32 @@ class _RegisterPageState extends State<RegisterView> {
                         ],
                       ),
                     ),
+                    const SizedBox(height: 20),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Divider(
+                          indent: 40,
+                          endIndent: 40,
+                          height: 2,
+                          color: Colors.black.withOpacity(0.5),
+                        ),
+                        const SizedBox(height: 10),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushReplacementNamed('/login-keluarga');
+                          },
+                          child: Text(
+                            "Saya sudah mendaftar",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.blue[300],
+                                fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      ],
+                    )
                   ],
                 ),
               ),

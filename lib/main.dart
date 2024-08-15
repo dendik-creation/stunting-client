@@ -1,5 +1,7 @@
+import 'package:client/controllers/keluarga_login_controller.dart';
 import 'package:client/controllers/kemandirian_controller.dart';
 import 'package:client/views/home_view.dart';
+import 'package:client/views/keluarga_login_view.dart';
 import 'package:client/views/onboarding_view.dart';
 import 'package:client/views/register_view.dart';
 import 'package:client/views/splash_view.dart';
@@ -17,6 +19,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => KemandirianController()),
+        ChangeNotifierProvider(create: (_) => KeluargaLoginController()),
       ],
       child: const MyApp(),
     ),
@@ -36,7 +39,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/onboarding': (context) => const OnboardingView(),
         '/register': (context) => const RegisterView(),
-        '/home': (context) => const HomeView(),
+        '/login-keluarga': (context) => const KeluargaLoginView(),
+        '/home-keluarga': (context) => const HomeView(),
         '/test-list': (context) => const TestListView(),
         '/test-kemandirian': (context) => const TestKemandirianView(),
       },

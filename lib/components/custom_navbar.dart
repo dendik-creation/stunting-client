@@ -9,7 +9,7 @@ class CustomNavigationBar extends StatelessWidget {
   void _onItemTapped(BuildContext context, int index) {
     switch (index) {
       case 0:
-        Navigator.of(context).pushReplacementNamed('/home');
+        Navigator.of(context).pushReplacementNamed('/home-keluarga');
         break;
       case 2:
         Navigator.of(context).pushReplacementNamed('/anak-sakit');
