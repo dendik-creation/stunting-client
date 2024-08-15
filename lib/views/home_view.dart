@@ -1,7 +1,8 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:client/components/custom_navbar.dart';
-import 'package:client/models/home_models.dart';
+import 'package:client/models/home_model.dart';
 import 'package:client/utils/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -25,8 +26,11 @@ class _HomeViewState extends State<HomeView> {
         backgroundColor: Colors.white,
         leading: Container(
           margin: const EdgeInsets.only(left: 24.0),
-          child: const CircleAvatar(
-            backgroundImage: NetworkImage('https://i.pravatar.cc/300'),
+          child: CircleAvatar(
+            child: Image.asset(
+              'assets/images/global/avatar.png',
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         actions: [
@@ -51,7 +55,12 @@ class _HomeViewState extends State<HomeView> {
             greeting(),
             const SizedBox(height: 24.0),
             Column(
-              children: [],
+              children: [
+                // latestScreening(),
+                firstScreening(),
+                const SizedBox(height: 20.0),
+                bukuSakuWdt(),
+              ],
             )
           ],
         ),
@@ -147,7 +156,9 @@ class _HomeViewState extends State<HomeView> {
   InkWell firstScreening() {
     return InkWell(
       onTap: () {
-        //
+        Timer(const Duration(milliseconds: 500), () {
+          Navigator.of(context).pushNamed('/test-list');
+        });
       },
       splashColor: AppColors.green[300],
       borderRadius: BorderRadius.circular(14.0),
@@ -220,7 +231,7 @@ class _HomeViewState extends State<HomeView> {
                     height: 10.0,
                   ),
                   Text(
-                    "Tambah wawasan mengenai stunting Anda",
+                    "Tambah wawasan Anda mengenai stunting",
                     style: TextStyle(
                         color: Colors.blue[800],
                         fontSize: 18.0,
