@@ -21,60 +21,63 @@ class _OnboardingViewState extends State<OnboardingView> {
     final List<OnboardingModel> contents =
         _onboardingController.onboardingPages;
 
-    return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: PageView.builder(
-              controller: _controller,
-              itemCount: contents.length,
-              onPageChanged: (int index) {
-                setState(() {
-                  currentIndex = index;
-                });
-              },
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.all(40.0),
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 20.0),
-                        child: Image.asset(
-                          contents[index].image,
-                          height: 400,
-                          width: 400,
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        body: Column(
+          children: [
+            Expanded(
+              child: PageView.builder(
+                controller: _controller,
+                itemCount: contents.length,
+                onPageChanged: (int index) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(40.0),
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 20.0),
+                          child: Image.asset(
+                            contents[index].image,
+                            height: 400,
+                            width: 400,
+                          ),
                         ),
-                      ),
-                      Column(
-                        children: <Widget>[
-                          Text(
-                            contents[index].title,
-                            style: const TextStyle(
-                                fontSize: 35, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            contents[index].description,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.normal,
+                        Column(
+                          children: <Widget>[
+                            Text(
+                              contents[index].title,
+                              style: const TextStyle(
+                                  fontSize: 35, fontWeight: FontWeight.bold),
                             ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                );
-              },
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              contents[index].description,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-          buildDot(contents.length),
-          nextButton(contents.length)
-        ],
+            buildDot(contents.length),
+            nextButton(contents.length)
+          ],
+        ),
       ),
     );
   }
@@ -90,7 +93,7 @@ class _OnboardingViewState extends State<OnboardingView> {
         ),
         onPressed: () {
           if (currentIndex == contentLength - 1) {
-            OnboardingController().goRegister(context);
+            OnboardingController().goLoginOrHome(context);
           } else {
             _controller.nextPage(
               duration: const Duration(milliseconds: 250),
