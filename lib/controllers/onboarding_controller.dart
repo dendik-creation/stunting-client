@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:developer';
 
+import 'package:client/utils/auth_user.dart';
 import 'package:flutter/material.dart';
 
 import '../models/onboarding_model.dart';
@@ -25,9 +27,15 @@ class OnboardingController {
     ),
   ];
 
-  void goRegister(BuildContext context) {
-    Timer(const Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacementNamed('/register');
+  void goLoginOrHome(BuildContext context) async {
+    dynamic hasKeluargaData = await KeluargaAuth.getData();
+    Timer(const Duration(seconds: 2), () {
+      // WALIK
+      if (hasKeluargaData != null) {
+        Navigator.of(context).pushReplacementNamed('/home-keluarga');
+      } else {
+        Navigator.of(context).pushReplacementNamed('/login-keluarga');
+      }
     });
   }
 }
