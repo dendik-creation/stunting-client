@@ -37,7 +37,7 @@ class KeluargaLoginController with ChangeNotifier {
         fontSize: 16.0,
       );
     } else {
-      KeluargaAuth.saveData(data['data']);
+      AuthUser.saveData('keluarga_auth', data['data']);
       // ignore: use_build_context_synchronously
       Navigator.of(context).pushReplacementNamed('/home-keluarga');
     }

@@ -51,7 +51,7 @@ class RegisterController {
         fontSize: 16.0,
       );
     }
-    await KeluargaAuth.saveData(data['data']);
+    await AuthUser.saveData('keluarga_auth', data['data']);
     await Navigator.of(context).pushReplacementNamed('/home');
   }
 }
