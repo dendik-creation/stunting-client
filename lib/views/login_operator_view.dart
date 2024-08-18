@@ -1,17 +1,17 @@
-import 'package:client/controllers/keluarga_login_controller.dart';
+import 'package:client/controllers/operator_login_controller.dart';
 import 'package:client/utils/theme.dart';
 import 'package:flutter/material.dart';
 
-class KeluargaLoginView extends StatefulWidget {
-  const KeluargaLoginView({super.key});
+class LoginOperatorView extends StatefulWidget {
+  const LoginOperatorView({super.key});
 
   @override
-  State<KeluargaLoginView> createState() => _KeluargaLoginViewState();
+  State<LoginOperatorView> createState() => _LoginOperatorViewState();
 }
 
-class _KeluargaLoginViewState extends State<KeluargaLoginView> {
+class _LoginOperatorViewState extends State<LoginOperatorView> {
   final _formKey = GlobalKey<FormState>();
-  final _controller = KeluargaLoginController();
+  final _controller = OperatorLoginController();
   bool _onSubmitting = false;
 
   void _loginCheck() async {
@@ -20,10 +20,9 @@ class _KeluargaLoginViewState extends State<KeluargaLoginView> {
       setState(() {
         _onSubmitting = true;
       });
-      await _controller.login(context).whenComplete(() {
-        setState(() {
-          _onSubmitting = false;
-        });
+      await _controller.login(context);
+      setState(() {
+        _onSubmitting = false;
       });
     }
   }
@@ -39,11 +38,11 @@ class _KeluargaLoginViewState extends State<KeluargaLoginView> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.person_2_rounded,
+              Icon(Icons.person_4_rounded,
                   size: 82.0, color: AppColors.green[500]),
               const SizedBox(height: 15),
               const Text(
-                'Cari NIK',
+                'Login',
                 style: TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
@@ -51,7 +50,7 @@ class _KeluargaLoginViewState extends State<KeluargaLoginView> {
               ),
               const SizedBox(height: 5),
               const Text(
-                'Cari NIK Anda untuk mengakses aplikasi',
+                'Akses aplikasi sebagai operator',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey,
@@ -63,11 +62,16 @@ class _KeluargaLoginViewState extends State<KeluargaLoginView> {
                 child: Column(
                   children: [
                     _buildTextField(
-                        "NIK", Icons.credit_card, TextInputType.number,
+                        "Username", Icons.person, TextInputType.text, (value) {
+                      _controller.handleChange(value!, 'username');
+                    }),
+                    const SizedBox(height: 15),
+                    _buildTextField(
+                        "Password", Icons.key_rounded, TextInputType.text,
                         (value) {
-                      _controller.handleChangeNik(value!);
-                    }, maxLength: 16),
-                    const SizedBox(height: 10),
+                      _controller.handleChange(value!, 'password');
+                    }, isPasswordType: true),
+                    const SizedBox(height: 30),
                     SizedBox(
                       height: 60,
                       width: double.infinity,
@@ -89,7 +93,7 @@ class _KeluargaLoginViewState extends State<KeluargaLoginView> {
                                 ),
                               )
                             : const Text(
-                                'Cari',
+                                'Login',
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -98,32 +102,6 @@ class _KeluargaLoginViewState extends State<KeluargaLoginView> {
                               ),
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Divider(
-                          indent: 40,
-                          endIndent: 40,
-                          height: 2,
-                          color: Colors.black.withOpacity(0.5),
-                        ),
-                        const SizedBox(height: 10),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context)
-                                .pushReplacementNamed('/register');
-                          },
-                          child: Text(
-                            "Saya pertama kali menggunakan aplikasi",
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.green[300],
-                                fontWeight: FontWeight.bold),
-                          ),
-                        )
-                      ],
-                    )
                   ],
                 ),
               )
@@ -136,8 +114,9 @@ class _KeluargaLoginViewState extends State<KeluargaLoginView> {
 
   Widget _buildTextField(String label, IconData icon, TextInputType type,
       FormFieldSetter<String> onSaved,
-      {int maxLength = 100}) {
+      {int maxLength = 100, bool isPasswordType = false}) {
     return TextFormField(
+      obscureText: isPasswordType,
       keyboardType: type,
       decoration: InputDecoration(
         labelText: label,
