@@ -8,7 +8,7 @@ class SplashView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _controller.goOnboarding(context);
+    _controller.hasUserAuth(context);
 
     return const Scaffold(
       body: Center(

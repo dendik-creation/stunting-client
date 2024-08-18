@@ -1,7 +1,3 @@
-import 'dart:async';
-
-import 'package:flutter/material.dart';
-
 import '../models/onboarding_model.dart';
 
 class OnboardingController {
@@ -24,10 +20,4 @@ class OnboardingController {
       image: 'assets/images/onboarding/3.png',
     ),
   ];
-
-  void goRegister(BuildContext context) {
-    Timer(const Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacementNamed('/register');
-    });
-  }
 }
