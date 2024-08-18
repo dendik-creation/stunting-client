@@ -52,6 +52,6 @@ class RegisterController {
       );
     }
     await AuthUser.saveData('keluarga_auth', data['data']);
-    await Navigator.of(context).pushReplacementNamed('/home');
+    await Navigator.of(context).pushReplacementNamed('/home-keluarga');
   }
 }
