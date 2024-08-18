@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'dart:developer';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:client/components/custom_navbar.dart';
+import 'package:client/controllers/home_controller.dart';
 import 'package:client/models/home_model.dart';
 import 'package:client/utils/theme.dart';
 import 'package:flutter/material.dart';
@@ -14,58 +15,114 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  bool approved = true;
+  bool isLoading = false;
+  dynamic keluargaAuth;
+  final _controller = HomeController();
+
+  void keluargaLogout() {
+    _controller.pushLogout(context, 'keluarga_auth');
+  }
+
+  Future<void> getKeluarga() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    final data = await _controller.getCurrentKeluarga();
+
+    setState(() {
+      keluargaAuth = data;
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getKeluarga();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
-        toolbarHeight: 60.0,
-        leadingWidth: 60.0,
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
         backgroundColor: Colors.white,
-        leading: Container(
-          margin: const EdgeInsets.only(left: 24.0),
-          child: CircleAvatar(
-            child: Image.asset(
-              'assets/images/global/avatar.png',
-              fit: BoxFit.cover,
+        appBar: AppBar(
+          elevation: 0,
+          toolbarHeight: 60.0,
+          leadingWidth: 60.0,
+          backgroundColor: Colors.white,
+          leading: Container(
+            margin: const EdgeInsets.only(left: 24.0),
+            child: CircleAvatar(
+              child: Image.asset(
+                'assets/images/global/avatar.png',
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-        ),
-        actions: [
-          IconButton(
-            padding: const EdgeInsets.only(right: 24.0),
-            icon: Icon(
-              Icons.logout_outlined,
-              color: AppColors.green[600],
+          actions: [
+            IconButton(
+              padding: const EdgeInsets.only(right: 24.0),
+              icon: Icon(
+                Icons.logout_outlined,
+                color: AppColors.green[600],
+              ),
+              onPressed: () {
+                AwesomeDialog(
+                  context: context,
+                  dialogType: DialogType.warning,
+                  animType: AnimType.bottomSlide,
+                  title: 'Konfirmasi Logout',
+                  desc: 'Apakah Anda yakin ingin logout?',
+                  btnCancelOnPress: () {},
+                  btnOkOnPress: () {
+                    keluargaLogout();
+                  },
+                  btnOkColor: AppColors.green[600],
+                ).show();
+              },
             ),
-            onPressed: () {
-              //
-            },
-          ),
-        ],
-      ),
-      body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            greeting(),
-            const SizedBox(height: 24.0),
-            Column(
-              children: [
-                // latestScreening(),
-                firstScreening(),
-                const SizedBox(height: 20.0),
-                bukuSakuWdt(),
-              ],
-            )
           ],
         ),
-      )),
-      bottomNavigationBar: const CustomNavigationBar(currentIndex: 0),
+        body: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : RefreshIndicator(
+                backgroundColor: AppColors.green[100],
+                color: AppColors.green[600],
+                onRefresh: () async {
+                  Timer(const Duration(milliseconds: 400), () {
+                    getKeluarga();
+                  });
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: ListView(
+                    children: [
+                      greeting(),
+                      const SizedBox(height: 24.0),
+                      int.parse(keluargaAuth?['is_approved']) == 0
+                          ? notYetApproved()
+                          : Column(
+                              children: [
+                                keluargaAuth?['latest_tingkat_kemandirian'] ==
+                                            null &&
+                                        keluargaAuth?[
+                                                'latest_kesehatan_lingkungan'] ==
+                                            null
+                                    ? firstScreening()
+                                    : latestScreening(),
+                                const SizedBox(height: 24.0),
+                                bukuSakuWdt(),
+                              ],
+                            )
+                    ],
+                  ),
+                ),
+              ),
+        bottomNavigationBar: const CustomNavigationBar(currentIndex: 0),
+      ),
     );
   }
 
@@ -90,19 +147,23 @@ class _HomeViewState extends State<HomeView> {
         ],
       ),
       const SizedBox(height: 5.0),
-      const Text('15 Juli 2024',
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500)),
+      Text(
+          // ignore: unnecessary_string_interpolations
+          '${_controller.parseToIdDate(keluargaAuth?['latest_tingkat_kemandirian']['tanggal'])}',
+          style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500)),
       const SizedBox(height: 15),
       Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         screeningItem(ScreeningItem(
             icon: Icons.bar_chart_rounded,
-            title: 'Tingkat 2',
+            title:
+                // ignore: unnecessary_string_interpolations
+                '${_controller.parseTingkatan(keluargaAuth?['latest_tingkat_kemandirian']['tingkatan'])}',
             description: 'Tingkat Kemandirian',
             color: AppColors.green[600])),
         const SizedBox(width: 15.0),
         screeningItem(ScreeningItem(
             icon: Icons.thermostat_rounded,
-            title: 'Sehat (365 poin)',
+            title: 'Example',
             description: 'Kesehatan Lingkungan',
             color: Colors.blue[600])),
       ]),
@@ -251,8 +312,8 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Container notYetApproved() {
-    return Container(
+  SizedBox notYetApproved() {
+    return SizedBox(
       width: double.infinity,
       height: 165.0,
       child: Container(
@@ -283,24 +344,22 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Container greeting() {
-    return Container(
+  SizedBox greeting() {
+    return SizedBox(
       width: double.infinity,
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Halo,',
             style: TextStyle(
-              fontSize: 24.0,
+              fontSize: 20.0,
             ),
           ),
+          const SizedBox(height: 5.0),
           Text(
-            "Dendi' Setiawan  👋",
-            style: TextStyle(
-              fontSize: 32.0,
-              fontWeight: FontWeight.bold,
-            ),
+            '${keluargaAuth?['nama_lengkap']}  👋',
+            style: const TextStyle(fontSize: 32.0, fontWeight: FontWeight.w600),
           ),
         ],
       ),

@@ -26,23 +26,4 @@ class OnboardingController {
       image: 'assets/images/onboarding/3.png',
     ),
   ];
-
-  void hasUserAuth(String targetKey, BuildContext context) {
-    dynamic hasAuth = AuthUser.getData(targetKey);
-    if (hasAuth != null || targetKey == 'keluarga_auth') {
-      Navigator.of(context).pushReplacementNamed('/home-keluarga');
-    }
-  }
-
-  void goLoginOrHome(BuildContext context) async {
-    dynamic hasKeluargaData = await AuthUser.getData('keluarga_auth');
-    Timer(const Duration(seconds: 2), () {
-      // WALIK
-      if (hasKeluargaData != null) {
-        Navigator.of(context).pushReplacementNamed('/home-keluarga');
-      } else {
-        Navigator.of(context).pushReplacementNamed('/login-keluarga');
-      }
-    });
-  }
 }

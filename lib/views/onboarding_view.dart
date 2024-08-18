@@ -17,12 +17,6 @@ class _OnboardingViewState extends State<OnboardingView> {
   final OnboardingController _onboardingController = OnboardingController();
 
   @override
-  void initState() {
-    _onboardingController.hasUserAuth('keluarga_auth', context);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final List<OnboardingModel> contents =
         _onboardingController.onboardingPages;
@@ -99,7 +93,7 @@ class _OnboardingViewState extends State<OnboardingView> {
         ),
         onPressed: () {
           if (currentIndex == contentLength - 1) {
-            OnboardingController().goLoginOrHome(context);
+            Navigator.of(context).pushReplacementNamed('/login-keluarga');
           } else {
             _controller.nextPage(
               duration: const Duration(milliseconds: 250),

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:client/utils/auth_user.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -21,8 +22,9 @@ class KemandirianController with ChangeNotifier {
   List<Map<String, dynamic>> get answers => _answers;
 
   Future<void> fetchQuestions() async {
-    final response = await http
-        .get(Uri.parse('${Constants.apiBaseUrl}/kemandirian/questions/1'));
+    final currentKeluarga = await AuthUser.getData('keluarga_auth');
+    final response = await http.get(Uri.parse(
+        '${Constants.apiBaseUrl}/kemandirian/questions/${currentKeluarga?['id']}'));
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       _kemandirianQuestion = (data['data'] as List)
@@ -70,12 +72,14 @@ class KemandirianController with ChangeNotifier {
   }
 
   void storeKemandirian(context) async {
+    final currentKeluarga = await AuthUser.getData('keluarga_auth');
     _onSubmitting = true;
     final Map<String, dynamic> answerData = {
       'data': answers,
     };
     final response = await http.post(
-        Uri.parse('${Constants.apiBaseUrl}/kemandirian/answer-question/1'),
+        Uri.parse(
+            '${Constants.apiBaseUrl}/kemandirian/answer-question/${currentKeluarga?['id']}'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(answerData));
     if (response.statusCode == 200) {

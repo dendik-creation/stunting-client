@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:client/utils/auth_user.dart';
 import 'package:client/utils/constant.dart';

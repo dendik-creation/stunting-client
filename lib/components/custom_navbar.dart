@@ -31,7 +31,7 @@ class CustomNavigationBar extends StatelessWidget {
       backgroundColor: Colors.white,
       onTap: (index) => _onItemTapped(context, index),
       items: [
-        navbarItem(Icons.home_filled, 'Beranda'),
+        navbarItem(Icons.dashboard, 'Beranda'),
         navbarItem(Icons.sick_rounded, 'Anak Sakit'),
         navbarItem(Icons.menu_book_rounded, 'Buku Saku'),
       ],
@@ -45,20 +45,20 @@ class CustomNavigationBar extends StatelessWidget {
         child: Icon(
           icon,
           size: 28.0,
-          color: AppColors.green[400],
+          color: AppColors.green[500],
         ),
       ),
       activeIcon: Container(
         decoration: BoxDecoration(
-          color: Colors.green[600],
-          borderRadius: BorderRadius.circular(100),
+          color: const Color.fromARGB(58, 67, 160, 72),
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Icon(
             icon,
             size: 28.0,
-            color: Colors.white,
+            color: AppColors.green[700],
           ),
         ),
       ),
