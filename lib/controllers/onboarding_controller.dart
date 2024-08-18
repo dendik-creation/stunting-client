@@ -1,9 +1,3 @@
-import 'dart:async';
-import 'dart:developer';
-
-import 'package:client/utils/auth_user.dart';
-import 'package:flutter/material.dart';
-
 import '../models/onboarding_model.dart';
 
 class OnboardingController {

@@ -9,22 +9,17 @@ import 'package:http/http.dart' as http;
 
 class KeluargaLoginController with ChangeNotifier {
   String _nik = '';
-  bool _onSubmitting = false;
 
   String get nik => _nik;
-  bool get onSubmitting => _onSubmitting;
 
   Future<void> login(BuildContext context) async {
-    _onSubmitting = true;
     final response = await http.get(
       Uri.parse('${Constants.apiBaseUrl}/keluarga/find')
           .replace(queryParameters: {'nik': nik}),
       headers: {
         'Content-Type': 'application/json',
       },
-    ).whenComplete(() {
-      _onSubmitting = false;
-    });
+    );
     final data = await jsonDecode(response.body);
     if (response.statusCode != 200) {
       Fluttertoast.showToast(

@@ -202,7 +202,7 @@ class _RegisterPageState extends State<RegisterView> {
                             "Saya sudah mendaftar",
                             style: TextStyle(
                                 fontSize: 16,
-                                color: Colors.blue[300],
+                                color: Colors.green[300],
                                 fontWeight: FontWeight.bold),
                           ),
                         )

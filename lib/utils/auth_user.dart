@@ -18,6 +18,16 @@ class AuthUser {
     return null;
   }
 
+  static Future<String?> getToken(String sharedKey) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? jsonData = prefs.getString(sharedKey);
+    if (jsonData != null) {
+      var data = jsonDecode(jsonData);
+      return data?['access_token'];
+    }
+    return null;
+  }
+
   static Future<void> removeData(String sharedKey) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove(sharedKey);

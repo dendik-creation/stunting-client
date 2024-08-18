@@ -1,4 +1,7 @@
 // lib/views/onboarding_view.dart
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import '../controllers/onboarding_controller.dart';
 import '../models/onboarding_model.dart';
@@ -14,7 +17,29 @@ class OnboardingView extends StatefulWidget {
 class _OnboardingViewState extends State<OnboardingView> {
   final PageController _controller = PageController();
   int currentIndex = 0;
+  int operatorLoginAction = 1;
   final OnboardingController _onboardingController = OnboardingController();
+
+  @override
+  void initState() {
+    setState(() {
+      currentIndex = 0;
+      operatorLoginAction = 1;
+    });
+    super.initState();
+  }
+
+  void _operatorAction() {
+    if (operatorLoginAction >= 5) {
+      Timer(const Duration(milliseconds: 500), () {
+        Navigator.of(context).pushReplacementNamed('/login-operator');
+      });
+    } else {
+      setState(() {
+        operatorLoginAction++;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +65,15 @@ class _OnboardingViewState extends State<OnboardingView> {
                     padding: const EdgeInsets.all(40.0),
                     child: Column(
                       children: [
-                        Container(
-                          margin: const EdgeInsets.only(top: 20.0),
-                          child: Image.asset(
-                            contents[index].image,
-                            height: 400,
-                            width: 400,
+                        GestureDetector(
+                          onTap: _operatorAction,
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 20.0),
+                            child: Image.asset(
+                              contents[index].image,
+                              height: 400,
+                              width: 400,
+                            ),
                           ),
                         ),
                         Column(

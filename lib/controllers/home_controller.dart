@@ -25,7 +25,7 @@ class HomeController {
   void pushLogout(BuildContext context, String targetKey) {
     AuthUser.removeData(targetKey);
     Timer(const Duration(milliseconds: 500), () {
-      Navigator.of(context).pushReplacementNamed('/login-keluarga');
+      Navigator.of(context).pushReplacementNamed('/onboarding');
     });
   }
 
