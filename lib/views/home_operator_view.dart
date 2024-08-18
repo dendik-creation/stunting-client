@@ -163,7 +163,7 @@ class _HomeOperatorViewState extends State<HomeOperatorView> {
                   onTap: () {
                     Navigator.pushNamed(
                       context,
-                      '/approval-detail',
+                      '/operator-approval',
                       arguments: approval.id.toString(),
                     );
                   },
@@ -173,7 +173,22 @@ class _HomeOperatorViewState extends State<HomeOperatorView> {
           ),
         )
       else
-        const Text('Tidak ada data yang tersedia'),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.verified_user_rounded,
+              color: AppColors.green[600],
+            ),
+            const SizedBox(
+              width: 10.0,
+            ),
+            const Text(
+              'Semua telah disetujui',
+              style: TextStyle(fontSize: 16.0),
+            ),
+          ],
+        ),
     ]);
   }
 
