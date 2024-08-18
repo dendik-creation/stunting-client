@@ -8,12 +8,12 @@ import 'dart:async';
 class SplashController {
   void hasUserAuth(BuildContext context) async {
     final keluargaAuth = await AuthUser.getData('keluarga_auth');
-    final userAuth = await AuthUser.getData('user_auth');
+    final operatorAuth = await AuthUser.getData('operator_auth');
 
     if (keluargaAuth != null) {
       keluargaHome(context);
-    } else if (userAuth != null) {
-      userHome(context);
+    } else if (operatorAuth != null) {
+      operatorHome(context);
     } else {
       goOnboarding(context);
     }
@@ -31,9 +31,9 @@ class SplashController {
     });
   }
 
-  void userHome(BuildContext context) {
+  void operatorHome(BuildContext context) {
     Timer(const Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacementNamed('/home-user');
+      Navigator.of(context).pushReplacementNamed('/home-operator');
     });
   }
 }

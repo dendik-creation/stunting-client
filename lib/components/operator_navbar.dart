@@ -1,21 +1,18 @@
 import 'package:client/utils/theme.dart';
 import 'package:flutter/material.dart';
 
-class CustomNavigationBar extends StatelessWidget {
+class OperatorNavbar extends StatelessWidget {
   final int currentIndex;
 
-  const CustomNavigationBar({super.key, required this.currentIndex});
+  const OperatorNavbar({super.key, required this.currentIndex});
 
   void _onItemTapped(BuildContext context, int index) {
     switch (index) {
       case 0:
-        Navigator.of(context).pushReplacementNamed('/home-keluarga');
+        Navigator.of(context).pushReplacementNamed('/home-operator');
         break;
       case 1:
-        Navigator.of(context).pushReplacementNamed('/anak-sakit');
-        break;
-      case 2:
-        Navigator.of(context).pushReplacementNamed('/buku-saku');
+        Navigator.of(context).pushReplacementNamed('/keluarga-list');
         break;
     }
   }
@@ -32,8 +29,7 @@ class CustomNavigationBar extends StatelessWidget {
       onTap: (index) => _onItemTapped(context, index),
       items: [
         navbarItem(Icons.dashboard, 'Beranda'),
-        navbarItem(Icons.sick_rounded, 'Anak Sakit'),
-        navbarItem(Icons.menu_book_rounded, 'Buku Saku'),
+        navbarItem(Icons.family_restroom_rounded, 'List Keluarga'),
       ],
     );
   }

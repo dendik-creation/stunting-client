@@ -1,6 +1,8 @@
 import 'package:client/controllers/keluarga_login_controller.dart';
 import 'package:client/controllers/kemandirian_controller.dart';
+import 'package:client/controllers/operator_home_controller.dart';
 import 'package:client/controllers/operator_login_controller.dart';
+import 'package:client/views/home_operator_view.dart';
 import 'package:client/views/home_view.dart';
 import 'package:client/views/keluarga_login_view.dart';
 import 'package:client/views/login_operator_view.dart';
@@ -23,6 +25,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => KemandirianController()),
         ChangeNotifierProvider(create: (_) => KeluargaLoginController()),
         ChangeNotifierProvider(create: (_) => OperatorLoginController()),
+        ChangeNotifierProvider(create: (_) => OperatorHomeController()),
       ],
       child: const MyApp(),
     ),
@@ -45,6 +48,7 @@ class MyApp extends StatelessWidget {
         '/login-keluarga': (context) => const KeluargaLoginView(),
         '/login-operator': (context) => const LoginOperatorView(),
         '/home-keluarga': (context) => const HomeView(),
+        '/home-operator': (context) => const HomeOperatorView(),
         '/test-list': (context) => const TestListView(),
         '/test-kemandirian': (context) => const TestKemandirianView(),
       },
