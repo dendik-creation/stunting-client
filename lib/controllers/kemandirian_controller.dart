@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'package:client/utils/auth_user.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -57,11 +58,25 @@ class KemandirianController with ChangeNotifier {
   }
 
   void nextQuestion(BuildContext context) {
-    if (_selectedOpt == null ||
-        _selectedOpt == false ||
+    if (_selectedOpt == null) {
+      Fluttertoast.showToast(
+        msg: 'Isi jawaban terlebih dahulu',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red[400],
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    } else if (_selectedOpt == false) {
+      log('end_false');
+      storeKemandirian(context);
+    } else if (_selectedOpt == true &&
         _currentIndex + 1 == _kemandirianQuestion.length) {
+      log('full_true');
+      saveAnswer();
       storeKemandirian(context);
     } else {
+      log('next');
       saveAnswer();
       _currentIndex += 1;
       if (_currentIndex >= _kemandirianQuestion.length) {
@@ -77,13 +92,20 @@ class KemandirianController with ChangeNotifier {
     final Map<String, dynamic> answerData = {
       'data': answers,
     };
-    final response = await http.post(
-        Uri.parse(
-            '${Constants.apiBaseUrl}/kemandirian/answer-question/${currentKeluarga?['id']}'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(answerData));
+    final response = await http
+        .post(
+            Uri.parse(
+                '${Constants.apiBaseUrl}/kemandirian/answer-question/${currentKeluarga?['id']}'),
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode(answerData))
+        .whenComplete(() {
+      _onSubmitting = false;
+      _currentIndex = 0;
+      _answers.clear();
+      _selectedOpt = null;
+    });
     if (response.statusCode == 200) {
-      Navigator.of(context).pushReplacementNamed('/test-list');
+      Navigator.of(context).pushReplacementNamed('/home-keluarga');
       final serverRes = jsonDecode(response.body);
       Fluttertoast.showToast(
         msg: serverRes['message'],
@@ -104,9 +126,6 @@ class KemandirianController with ChangeNotifier {
         fontSize: 16.0,
       );
     }
-    _onSubmitting = false;
-    _currentIndex = 0;
-    _selectedOpt = null;
     notifyListeners();
   }
 }
