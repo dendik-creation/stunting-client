@@ -110,9 +110,9 @@ class _TestKemandirianViewState extends State<TestKemandirianView> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF12d516),
                   ),
-                  onPressed: () {
-                    controller.nextQuestion(context);
-                  },
+                  onPressed: () => controller.onSubmitting!
+                      ? null
+                      : controller.nextQuestion(context),
                   child: controller.onSubmitting!
                       ? const SizedBox(
                           width: 24,
