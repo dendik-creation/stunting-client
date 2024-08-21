@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-import 'dart:developer';
 
 import 'package:client/utils/auth_user.dart';
 import 'package:flutter/material.dart';

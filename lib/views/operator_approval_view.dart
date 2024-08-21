@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:client/controllers/operator_approval_controller.dart';
 import 'package:client/models/home_operator_model.dart';

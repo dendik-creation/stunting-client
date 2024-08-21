@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:client/models/home_operator_model.dart';
 import 'package:client/utils/auth_user.dart';
 import 'package:client/utils/constant.dart';
@@ -19,18 +17,34 @@ class OperatorHomeController with ChangeNotifier {
     return null;
   }
 
-  Future<List<ApprovalRequest>?> getAvailableApproval() async {
-    var response = await http.get(
+  Future<List<ApprovalRequest>?> getAvailableApproval(
+      BuildContext context) async {
+    final token = await Constants.getApiToken();
+    final response = await http.get(
       Uri.parse("${Constants.apiBaseUrl}/operator/home"),
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer ${await Constants.getApiToken()}"
+        "Authorization": "Bearer $token"
       },
     );
 
-    final List<dynamic> jsonResponse =
-        jsonDecode(response.body)['data']['approval_request'];
-    return jsonResponse.map((data) => ApprovalRequest.fromJson(data)).toList();
+    if (response.statusCode == 401) {
+      directLogout(context, 'operator_auth');
+    } else if (response.statusCode == 200) {
+      final List<dynamic> jsonResponse =
+          jsonDecode(response.body)['data']['approval_request'];
+      return jsonResponse
+          .map((data) => ApprovalRequest.fromJson(data))
+          .toList();
+    }
+    notifyListeners();
+    return null;
+  }
+
+  void directLogout(BuildContext context, String targetKey) {
+    AuthUser.removeData(targetKey)
+        // ignore: use_build_context_synchronously
+        .then((_) => Navigator.of(context).pushReplacementNamed('/onboarding'));
   }
 
   void pushLogout(BuildContext context, String targetKey) async {
@@ -40,12 +54,10 @@ class OperatorHomeController with ChangeNotifier {
       "Authorization": "Bearer ${await Constants.getApiToken()}"
     });
 
-    if (response.statusCode == 200) {
-      Timer(const Duration(milliseconds: 500), () {
-        AuthUser.removeData(targetKey);
-        Navigator.of(context).pushReplacementNamed('/onboarding');
-      });
-    }
+    Timer(const Duration(milliseconds: 500), () {
+      AuthUser.removeData(targetKey);
+      Navigator.of(context).pushReplacementNamed('/onboarding');
+    });
 
     notifyListeners();
   }
