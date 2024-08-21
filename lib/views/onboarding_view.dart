@@ -1,6 +1,5 @@
 // lib/views/onboarding_view.dart
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import '../controllers/onboarding_controller.dart';

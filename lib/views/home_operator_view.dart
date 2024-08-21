@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:client/components/operator_navbar.dart';
 import 'package:client/controllers/operator_home_controller.dart';
 import 'package:client/models/home_operator_model.dart';
-import 'package:client/utils/constant.dart';
 import 'package:client/utils/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +30,7 @@ class _HomeOperatorViewState extends State<HomeOperatorView> {
     });
     final data = await _controller.getCurrentOperator();
     List<ApprovalRequest>? availableRequest =
-        await OperatorHomeController().getAvailableApproval();
+        await _controller.getAvailableApproval(context);
     setState(() {
       operatorAuth = data;
       isLoading = false;
