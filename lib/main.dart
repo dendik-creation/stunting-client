@@ -1,7 +1,9 @@
+import 'package:client/controllers/anak_sakit_controller.dart';
 import 'package:client/controllers/keluarga_login_controller.dart';
 import 'package:client/controllers/kemandirian_controller.dart';
 import 'package:client/controllers/operator_home_controller.dart';
 import 'package:client/controllers/operator_login_controller.dart';
+import 'package:client/views/anak_sakit_view.dart';
 import 'package:client/views/home_operator_view.dart';
 import 'package:client/views/home_view.dart';
 import 'package:client/views/keluarga_login_view.dart';
@@ -27,6 +29,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => KeluargaLoginController()),
         ChangeNotifierProvider(create: (_) => OperatorLoginController()),
         ChangeNotifierProvider(create: (_) => OperatorHomeController()),
+        ChangeNotifierProvider(create: (_) => AnakSakitController()),
       ],
       child: const MyApp(),
     ),
@@ -53,6 +56,7 @@ class MyApp extends StatelessWidget {
         '/operator-approval': (context) => const OperatorApprovalView(),
         '/test-list': (context) => const TestListView(),
         '/test-kemandirian': (context) => const TestKemandirianView(),
+        '/anak-sakit': (context) => const AnakSakitView(),
       },
     );
   }

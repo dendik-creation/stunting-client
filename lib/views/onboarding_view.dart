@@ -76,9 +76,11 @@ class _OnboardingViewState extends State<OnboardingView> {
                           ),
                         ),
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Text(
                               contents[index].title,
+                              textAlign: TextAlign.center,
                               style: const TextStyle(
                                   fontSize: 35, fontWeight: FontWeight.bold),
                             ),

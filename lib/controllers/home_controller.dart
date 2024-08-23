@@ -41,4 +41,13 @@ class HomeController {
     String formattedDate = DateFormat("d MMMM y", "id_ID").format(date);
     return formattedDate;
   }
+
+  String separateName(String name) {
+    List<String> splitName = name.split(" ");
+    if (splitName.length > 2) {
+      return splitName[1];
+    } else {
+      return splitName[0];
+    }
+  }
 }
