@@ -38,7 +38,7 @@ class CustomAlert extends StatelessWidget {
             ),
       onTap: () {
         if (_routeUrl != null) {
-          Navigator.of(context).pushReplacementNamed(_routeUrl!);
+          Navigator.of(context).pushReplacementNamed(_routeUrl);
         }
       },
     );

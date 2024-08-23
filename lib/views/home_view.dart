@@ -259,7 +259,6 @@ class _HomeViewState extends State<HomeView> {
       borderRadius: BorderRadius.circular(14.0),
       child: Container(
         width: double.infinity,
-        height: 135.0,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14.0),
           color: AppColors.green[200]?.withOpacity(0.6),
@@ -267,33 +266,36 @@ class _HomeViewState extends State<HomeView> {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(Icons.track_changes_rounded,
-                      color: AppColors.green[600], size: 64.0),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  if (step == null || step == 1)
-                    Text(
-                      "Ayo tes screening pertama Anda",
-                      style: TextStyle(
-                          color: AppColors.green[800],
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w600),
-                    )
-                  else
-                    Text(
-                      "Ayo tes screening ke-$step Anda",
-                      style: TextStyle(
-                          color: AppColors.green[800],
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w600),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(Icons.track_changes_rounded,
+                        color: AppColors.green[600], size: 64.0),
+                    const SizedBox(
+                      height: 10.0,
                     ),
-                ],
+                    if (step == null || step == 1)
+                      Text(
+                        "Ayo tes screening pertama Anda",
+                        style: TextStyle(
+                            color: AppColors.green[800],
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w600),
+                      )
+                    else
+                      Text(
+                        "Ayo tes screening ke-$step Anda",
+                        style: TextStyle(
+                            color: AppColors.green[800],
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w600),
+                      ),
+                  ],
+                ),
               ),
               Icon(
                 Icons.chevron_right_rounded,
@@ -323,7 +325,7 @@ class _HomeViewState extends State<HomeView> {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start, // Align to the top
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
