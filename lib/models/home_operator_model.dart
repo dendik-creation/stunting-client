@@ -7,8 +7,8 @@ class ApprovalRequest {
   final String rt;
   final String rw;
   final String noTelp;
-  final String isApproved;
-  final String isFreeStunting;
+  final int isApproved;
+  final int isFreeStunting;
   final String puskesmasId;
   final Puskesmas puskesmas;
 
