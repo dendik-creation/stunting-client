@@ -1,6 +1,5 @@
 // lib/views/onboarding_view.dart
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import '../controllers/onboarding_controller.dart';
@@ -32,7 +31,7 @@ class _OnboardingViewState extends State<OnboardingView> {
   void _operatorAction() {
     if (operatorLoginAction >= 5) {
       Timer(const Duration(milliseconds: 500), () {
-        Navigator.of(context).pushReplacementNamed('/login-operator');
+        Navigator.of(context).pushNamed('/login-operator');
       });
     } else {
       setState(() {
@@ -77,9 +76,11 @@ class _OnboardingViewState extends State<OnboardingView> {
                           ),
                         ),
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Text(
                               contents[index].title,
+                              textAlign: TextAlign.center,
                               style: const TextStyle(
                                   fontSize: 35, fontWeight: FontWeight.bold),
                             ),
@@ -121,7 +122,7 @@ class _OnboardingViewState extends State<OnboardingView> {
         ),
         onPressed: () {
           if (currentIndex == contentLength - 1) {
-            Navigator.of(context).pushReplacementNamed('/login-keluarga');
+            Navigator.of(context).pushNamed('/login-keluarga');
           } else {
             _controller.nextPage(
               duration: const Duration(milliseconds: 250),

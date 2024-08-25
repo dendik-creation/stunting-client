@@ -1,5 +1,6 @@
 import 'package:client/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 
 class OperatorNavbar extends StatelessWidget {
   final int currentIndex;
@@ -19,47 +20,36 @@ class OperatorNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      showSelectedLabels: false,
-      fixedColor: Colors.white,
-      showUnselectedLabels: false,
-      currentIndex: currentIndex,
-      landscapeLayout: BottomNavigationBarLandscapeLayout.spread,
-      backgroundColor: Colors.white,
-      onTap: (index) => _onItemTapped(context, index),
-      items: [
-        navbarItem(Icons.dashboard, 'Beranda'),
-        navbarItem(Icons.family_restroom_rounded, 'List Keluarga'),
-      ],
+    return Container(
+      margin: const EdgeInsets.all(10.0),
+      child: BottomNavyBar(
+        selectedIndex: currentIndex,
+        showElevation: true,
+        itemCornerRadius: 10.0,
+        borderRadius: const BorderRadius.all(Radius.circular(18.0)),
+        shadowColor: Colors.transparent,
+        containerHeight: 60.0,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        backgroundColor: Colors.transparent,
+        onItemSelected: (index) => _onItemTapped(context, index),
+        items: [
+          navbarItem(Icons.home, 'Beranda'),
+          navbarItem(Icons.family_restroom_rounded, 'Keluarga'),
+        ],
+      ),
     );
   }
 
-  BottomNavigationBarItem navbarItem(IconData icon, String label) {
-    return BottomNavigationBarItem(
-      icon: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Icon(
-          icon,
-          size: 28.0,
-          color: AppColors.green[500],
-        ),
+  BottomNavyBarItem navbarItem(IconData icon, String label) {
+    return BottomNavyBarItem(
+      icon: Icon(
+        icon,
+        size: 32.0,
       ),
-      activeIcon: Container(
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(58, 67, 160, 72),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Icon(
-            icon,
-            size: 28.0,
-            color: AppColors.green[700],
-          ),
-        ),
-      ),
-      label: label,
-      tooltip: label,
+      title: Container(
+          margin: const EdgeInsets.only(left: 12.0), child: Text(label)),
+      activeColor: AppColors.green[700]!,
+      inactiveColor: AppColors.green[400]!,
     );
   }
 }
