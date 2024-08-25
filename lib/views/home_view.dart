@@ -166,7 +166,7 @@ class _HomeViewState extends State<HomeView> {
                     ?['tingkat_kemandirian'] ==
                 true)
               screeningItem(ScreeningItem(
-                icon: Icons.bar_chart_rounded,
+                icon: Icons.leaderboard_rounded,
                 title: _controller.parseTingkatan(
                     keluargaAuth?['screening_test']?['test_result']
                         ?['tingkat_kemandirian']?['tingkatan']),
@@ -181,8 +181,13 @@ class _HomeViewState extends State<HomeView> {
                     ?['kesehatan_lingkungan'] ==
                 true)
               screeningItem(ScreeningItem(
-                icon: Icons.thermostat_rounded,
-                title: 'Example',
+                icon: Icons.health_and_safety_rounded,
+                title: _controller.showKesehatan(
+                    keluargaAuth?['screening_test']?['test_result']
+                        ['kesehatan_lingkungan']['is_healthy'],
+                    keluargaAuth!['screening_test']!['test_result']![
+                            'kesehatan_lingkungan']!['nilai_total']
+                        .toString()),
                 description: 'Kesehatan Lingkungan',
                 color: Colors.blue[600],
               )),

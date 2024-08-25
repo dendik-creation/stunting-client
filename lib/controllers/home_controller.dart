@@ -47,7 +47,13 @@ class HomeController {
     if (splitName.length > 2) {
       return splitName[1];
     } else {
-      return splitName[0];
+      return "${splitName[0]} ${splitName[1]}";
     }
+  }
+
+  String showKesehatan(int isHealthy, String nilai) {
+    String health = isHealthy == 1 ? 'Sehat' : 'Tidak Sehat';
+
+    return "$health ($nilai poin)";
   }
 }

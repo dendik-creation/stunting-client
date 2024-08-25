@@ -34,7 +34,7 @@ class _TestKemandirianViewState extends State<TestKemandirianView> {
             title: const Padding(
               padding: EdgeInsets.all(10.0),
               child: Text(
-                'Test Kriteria Kemandirian',
+                'Tes Kriteria Kemandirian',
                 style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
               ),
             )),
