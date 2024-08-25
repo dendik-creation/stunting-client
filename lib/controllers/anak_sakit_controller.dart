@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:client/models/anak_sakit_model.dart';
 import 'package:client/utils/constant.dart';
@@ -14,7 +13,7 @@ class AnakSakitController with ChangeNotifier {
   final int _maxIndex = 4;
   int _currentIndex = 0;
   bool _onSubmitting = false;
-  final AnakSakitModel _answerData = AnakSakitModel(
+  AnakSakitModel _answerData = AnakSakitModel(
     namaAnak: '',
     usia: '',
     jenisKelamin: '',
@@ -179,7 +178,22 @@ class AnakSakitController with ChangeNotifier {
         fontSize: 16.0,
       );
       Timer(const Duration(seconds: 1), () {
-        Navigator.of(context).pushReplacementNamed("/home-keluarga");
+        _currentIndex = 0;
+        _answerData = AnakSakitModel(
+          namaAnak: '',
+          usia: '',
+          jenisKelamin: '',
+          tinggiBadan: '',
+          beratBadan: '',
+          riwayatLahirAnak: '',
+          ibuBekerja: '',
+          pendidikanIbu: '',
+          orangTuaMerokok: '',
+          penyakitPenyertaList: [],
+          penyakitKomplikasiList: [],
+        );
+        Navigator.of(context)
+            .pushReplacementNamed("/test-kesehatan-lingkungan");
       });
     }
     notifyListeners();

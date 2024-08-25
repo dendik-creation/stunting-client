@@ -1,3 +1,4 @@
+import 'package:client/components/custom_alert.dart';
 import 'package:client/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:client/controllers/kemandirian_controller.dart';
@@ -34,70 +35,72 @@ class _TestKemandirianViewState extends State<TestKemandirianView> {
             title: const Padding(
               padding: EdgeInsets.all(10.0),
               child: Text(
-                'Test Kriteria Kemandirian',
+                'Tes Kriteria Kemandirian',
                 style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
               ),
             )),
         backgroundColor: Colors.white,
         body: SafeArea(
-          child: Container(
-            margin: const EdgeInsets.only(top: 30.0),
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: controller.questions.isEmpty
-                  ? const Center(child: CircularProgressIndicator())
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          (controller.currentIndex + 1).toString(),
-                          style: TextStyle(
-                              fontSize: 65.0,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.green[700]),
-                        ),
-                        const SizedBox(height: 20.0),
-                        Text(
-                          controller
-                              .questions[controller.currentIndex].pertanyaan,
-                          style: const TextStyle(
-                              fontSize: 20.0, fontWeight: FontWeight.normal),
-                        ),
-                        const SizedBox(height: 20.0),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            RadioListTile<bool>(
-                              value: true,
-                              title: const Text('Ya'),
-                              groupValue: controller.selectedOpt,
-                              onChanged: controller.handleRadioValueChange,
-                              contentPadding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              tileColor: AppColors.green[100],
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: controller.questions.isEmpty
+                ? const Center(child: CircularProgressIndicator())
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const CustomAlert(
+                        title:
+                            "Jawab pertanyaan dengan jawaban yang paling sesuai",
+                      ),
+                      const SizedBox(height: 30.0),
+                      Text(
+                        (controller.currentIndex + 1).toString(),
+                        style: TextStyle(
+                            fontSize: 65.0,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.green[700]),
+                      ),
+                      const SizedBox(height: 20.0),
+                      Text(
+                        controller
+                            .questions[controller.currentIndex].pertanyaan,
+                        style: const TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.normal),
+                      ),
+                      const SizedBox(height: 20.0),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          RadioListTile<bool>(
+                            value: true,
+                            title: const Text('Ya'),
+                            groupValue: controller.selectedOpt,
+                            onChanged: controller.handleRadioValueChange,
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
                             ),
-                            const SizedBox(height: 15.0),
-                            RadioListTile<bool>(
-                              title: const Text('Tidak'),
-                              value: false,
-                              groupValue: controller.selectedOpt,
-                              onChanged: controller.handleRadioValueChange,
-                              contentPadding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              tileColor: Colors.red[100],
+                            tileColor: AppColors.green[100],
+                          ),
+                          const SizedBox(height: 15.0),
+                          RadioListTile<bool>(
+                            title: const Text('Tidak'),
+                            value: false,
+                            groupValue: controller.selectedOpt,
+                            onChanged: controller.handleRadioValueChange,
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
-            ),
+                            tileColor: Colors.red[100],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
           ),
         ),
         bottomNavigationBar: controller.questions.isEmpty

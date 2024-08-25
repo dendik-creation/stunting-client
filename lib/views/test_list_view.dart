@@ -1,3 +1,4 @@
+import 'package:client/utils/auth_user.dart';
 import 'package:client/utils/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -9,11 +10,34 @@ class TestListView extends StatefulWidget {
 }
 
 class _TestListViewState extends State<TestListView> {
-  List<String> tests = [
-    'Tes Kriteria Kemandirian Keluarga',
-    'Entri Data Anak yang Sakit',
-    'Tes Kesehatan Lingkungan'
-  ];
+  List<String> tests = [];
+
+  void generateList() async {
+    var keluarga = await AuthUser.getData('keluarga_auth');
+    if (await keluarga?['screening_test']['current_step'] > 1) {
+      setState(() {
+        tests = [
+          'Tes kriteria kemandirian keluarga',
+          'Tes kesehatan lingkungan (sanitasi)',
+        ];
+      });
+    } else {
+      setState(() {
+        tests = [
+          'Tes kriteria kemandirian keluarga',
+          'Entri data anak yang sakit (pertama kali)',
+          'Tes kesehatan lingkungan (sanitasi)',
+        ];
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    generateList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,29 +63,31 @@ class _TestListViewState extends State<TestListView> {
                 const SizedBox(
                   height: 5.0,
                 ),
-                const Text(
-                  'Ada 3 Form yang akan Anda jalani : ',
-                  style: TextStyle(fontSize: 18.0),
+                Text(
+                  "Ada ${tests.length.toString()} Form yang akan Anda jalani : ",
+                  style: const TextStyle(fontSize: 18.0),
                 ),
                 const SizedBox(height: 10.0),
                 Column(
-                  children: List.generate(
-                      tests.length,
-                      (int index) => Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 20.0),
-                              Text(
-                                '${index + 1}.',
-                                style: const TextStyle(fontSize: 20.0),
-                              ),
-                              const SizedBox(width: 10.0),
-                              Text(
-                                tests[index],
-                                style: const TextStyle(fontSize: 20.0),
-                              ),
-                            ],
-                          )),
+                  children: tests.isEmpty
+                      ? []
+                      : List.generate(
+                          tests.length,
+                          (int index) => Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 20.0),
+                                  Text(
+                                    '${index + 1}.',
+                                    style: const TextStyle(fontSize: 20.0),
+                                  ),
+                                  const SizedBox(width: 10.0),
+                                  Text(
+                                    tests[index],
+                                    style: const TextStyle(fontSize: 20.0),
+                                  ),
+                                ],
+                              )),
                 ),
                 const SizedBox(height: 20.0),
                 const Text(

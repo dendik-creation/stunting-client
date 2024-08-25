@@ -86,9 +86,24 @@ class KemandirianController with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<String> whatNextTest() async {
+    final keluarga = await AuthUser.getData('keluarga_auth');
+    var response = await http.get(
+      Uri.parse("${Constants.apiBaseUrl}/anak-sakit/get/${keluarga?['id']}"),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    );
+    if (response.statusCode == 404) {
+      return "/test-anak-sakit";
+    } else {
+      return "/test-kesehatan-lingkungan";
+    }
+  }
+
   void storeKemandirian(context) async {
-    final currentKeluarga = await AuthUser.getData('keluarga_auth');
     _onSubmitting = true;
+    final currentKeluarga = await AuthUser.getData('keluarga_auth');
     final Map<String, dynamic> answerData = {
       'data': answers,
     };
@@ -105,7 +120,6 @@ class KemandirianController with ChangeNotifier {
       _selectedOpt = null;
     });
     if (response.statusCode == 200) {
-      Navigator.of(context).pushReplacementNamed('/home-keluarga');
       final serverRes = jsonDecode(response.body);
       Fluttertoast.showToast(
         msg: serverRes['message'],
@@ -115,6 +129,7 @@ class KemandirianController with ChangeNotifier {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+      Navigator.of(context).pushReplacementNamed(await whatNextTest());
     } else {
       final serverRes = jsonDecode(response.body);
       Fluttertoast.showToast(
