@@ -64,8 +64,9 @@ class MyApp extends StatelessWidget {
         '/operator-approval': (context) => const OperatorApprovalView(),
         '/test-list': (context) => const TestListView(),
         '/test-kemandirian': (context) => const TestKemandirianView(),
-        '/anak-sakit': (context) => const AnakSakitView(),
-        '/kesehatan-lingkungan': (context) => const KesehatanLingkunganView(),
+        '/test-anak-sakit': (context) => const AnakSakitView(),
+        '/test-kesehatan-lingkungan': (context) =>
+            const KesehatanLingkunganView(),
       },
     );
   }

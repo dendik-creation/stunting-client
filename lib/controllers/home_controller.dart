@@ -19,6 +19,7 @@ class HomeController {
       },
     );
     final result = jsonDecode(response.body);
+    await AuthUser.saveData('keluarga_auth', result['data']);
     return result['data'];
   }
 
@@ -55,5 +56,20 @@ class HomeController {
     String health = isHealthy == 1 ? 'Sehat' : 'Tidak Sehat';
 
     return "$health ($nilai poin)";
+  }
+
+  Future<String> whatNextTest() async {
+    final keluarga = await AuthUser.getData('keluarga_auth');
+    var response = await http.get(
+      Uri.parse("${Constants.apiBaseUrl}/anak-sakit/get/${keluarga?['id']}"),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    );
+    if (response.statusCode == 404) {
+      return "/test-anak-sakit";
+    } else {
+      return "/test-kesehatan-lingkungan";
+    }
   }
 }

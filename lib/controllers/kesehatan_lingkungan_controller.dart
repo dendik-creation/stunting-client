@@ -17,7 +17,7 @@ class KesehatanLingkunganController with ChangeNotifier {
 
   List<QuestionList> get questions => _questions;
   int get questionIndex => _questionIndex;
-  bool get onSubmitting => _onSubmitting;
+  bool? get onSubmitting => _onSubmitting;
   List<Map<String, int>> get answers => _answers;
 
   Future<void> fetchQuestions() async {
@@ -51,11 +51,11 @@ class KesehatanLingkunganController with ChangeNotifier {
   }
 
   bool validateAnswer() {
-    log(_answers.toString());
     return _answers.every((answer) => answer['kriteria_kesehatan_id'] != 0);
   }
 
   void handleSubmit(BuildContext context) async {
+    _onSubmitting = true;
     if (!validateAnswer()) {
       Fluttertoast.showToast(
           msg: "Lengkapi seluruh jawaban dahulu",
@@ -65,9 +65,9 @@ class KesehatanLingkunganController with ChangeNotifier {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
-      return;
+      _onSubmitting = false;
+      notifyListeners();
     }
-    _onSubmitting = true;
     final currentKeluarga = await AuthUser.getData('keluarga_auth');
     final response = await http
         .post(
@@ -80,6 +80,7 @@ class KesehatanLingkunganController with ChangeNotifier {
     )
         .whenComplete(() {
       _onSubmitting = false;
+      notifyListeners();
     });
 
     if (response.statusCode == 200) {
@@ -93,10 +94,11 @@ class KesehatanLingkunganController with ChangeNotifier {
           textColor: Colors.white,
           fontSize: 16.0);
       Timer(const Duration(seconds: 1), () {
+        _answers.clear();
+        _questionIndex = 0;
         Navigator.of(context).pushReplacementNamed("/home-keluarga");
       });
     }
-    notifyListeners();
   }
 
   void handleChangeAnswer(Map<String, int> newAnswer) {

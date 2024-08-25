@@ -17,11 +17,20 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   bool isLoading = false;
+  String nextRouteIfNotComplete = "";
   dynamic keluargaAuth;
   final _controller = HomeController();
 
   void keluargaLogout() {
     _controller.pushLogout(context, 'keluarga_auth');
+  }
+
+  void getNextTest() async {
+    final nextTest = await _controller.whatNextTest();
+    setState(() {
+      nextRouteIfNotComplete = nextTest;
+    });
+    return;
   }
 
   Future<void> getKeluarga() async {
@@ -35,6 +44,8 @@ class _HomeViewState extends State<HomeView> {
       keluargaAuth = data;
       isLoading = false;
     });
+
+    getNextTest();
   }
 
   @override
@@ -109,8 +120,8 @@ class _HomeViewState extends State<HomeView> {
                       else
                         Column(
                           children: [
-                            if (keluargaAuth?['screening_test']
-                                    ?['current_step'] ==
+                            if (keluargaAuth?['screening_test']?['test_result']
+                                    ?['tingkat_kemandirian'] ==
                                 null)
                               testCTA(
                                   step: keluargaAuth?['screening_test']
@@ -151,10 +162,14 @@ class _HomeViewState extends State<HomeView> {
         ],
       ),
       const SizedBox(height: 5.0),
-      Text(
-          // ignore: unnecessary_string_interpolations
-          '${_controller.parseToIdDate(keluargaAuth?['screening_test']?['test_result']?['tingkat_kemandirian']?['tanggal'])}',
-          style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500)),
+      if (keluargaAuth?['screening_test']?['test_result']
+              ?['tingkat_kemandirian'] !=
+          null)
+        Text(
+            _controller.parseToIdDate(keluargaAuth?['screening_test']
+                ?['test_result']?['tingkat_kemandirian']?['tanggal']),
+            style:
+                const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500)),
       const SizedBox(height: 15),
       testStatus(keluargaAuth?['screening_test']?['is_complete']?['status']),
       const SizedBox(height: 15),
@@ -204,9 +219,9 @@ class _HomeViewState extends State<HomeView> {
             "Tes Berikutnya pada ${_controller.parseToIdDate(keluargaAuth?['screening_test']?['is_complete']?['next_test'])}",
       );
     } else {
-      return const CustomAlert(
+      return CustomAlert(
           title: "Ada tes yang belum diselesaikan",
-          routeUrl: "/for-sanitasi-lingkungan");
+          routeUrl: nextRouteIfNotComplete);
     }
   }
 
@@ -283,7 +298,7 @@ class _HomeViewState extends State<HomeView> {
                     const SizedBox(
                       height: 10.0,
                     ),
-                    if (step == null || step == 1)
+                    if (step == 0 || step == 1)
                       Text(
                         "Ayo tes screening pertama Anda",
                         style: TextStyle(

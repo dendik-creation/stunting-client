@@ -72,7 +72,9 @@ class _KesehatanLingkunganViewState extends State<KesehatanLingkunganView> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: _buildOption(controller),
+                          children: controller.questions.isEmpty
+                              ? []
+                              : _buildOption(controller),
                         ),
                       ],
                     ),
@@ -102,7 +104,7 @@ class _KesehatanLingkunganViewState extends State<KesehatanLingkunganView> {
                   foregroundColor: Colors.transparent,
                   minimumSize: const Size(160.0, 60.0),
                 ),
-                onPressed: () => !controller.onSubmitting
+                onPressed: () => !controller.onSubmitting!
                     ? controller.handleChangeQuestion('back')
                     : null,
                 child: const Text(
@@ -125,7 +127,7 @@ class _KesehatanLingkunganViewState extends State<KesehatanLingkunganView> {
                   minimumSize: const Size(160.0, 60.0),
                 ),
                 onPressed: () {
-                  if (!controller.onSubmitting) {
+                  if (!controller.onSubmitting!) {
                     if (controller.questionIndex ==
                         controller.questions.length - 1) {
                       controller.handleSubmit(context);
@@ -134,7 +136,7 @@ class _KesehatanLingkunganViewState extends State<KesehatanLingkunganView> {
                     }
                   }
                 },
-                child: controller.onSubmitting
+                child: controller.onSubmitting!
                     ? const SizedBox(
                         width: 24,
                         height: 24,
