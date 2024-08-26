@@ -115,9 +115,7 @@ class KemandirianController with ChangeNotifier {
             body: jsonEncode(answerData))
         .whenComplete(() {
       _onSubmitting = false;
-      _currentIndex = 0;
-      _answers.clear();
-      _selectedOpt = null;
+      notifyListeners();
     });
     if (response.statusCode == 200) {
       final serverRes = jsonDecode(response.body);
@@ -130,6 +128,9 @@ class KemandirianController with ChangeNotifier {
         fontSize: 16.0,
       );
       Navigator.of(context).pushReplacementNamed(await whatNextTest());
+      _currentIndex = 0;
+      _answers.clear();
+      _selectedOpt = null;
     } else {
       final serverRes = jsonDecode(response.body);
       Fluttertoast.showToast(
@@ -141,6 +142,5 @@ class KemandirianController with ChangeNotifier {
         fontSize: 16.0,
       );
     }
-    notifyListeners();
   }
 }

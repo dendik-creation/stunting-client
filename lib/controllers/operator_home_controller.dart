@@ -29,6 +29,7 @@ class OperatorHomeController with ChangeNotifier {
     );
 
     if (response.statusCode == 401) {
+      // ignore: use_build_context_synchronously
       directLogout(context, 'operator_auth');
     } else if (response.statusCode == 200) {
       final List<dynamic> jsonResponse =
@@ -48,8 +49,7 @@ class OperatorHomeController with ChangeNotifier {
   }
 
   void pushLogout(BuildContext context, String targetKey) async {
-    var response = await http
-        .post(Uri.parse("${Constants.apiBaseUrl}/auth/logout"), headers: {
+    await http.post(Uri.parse("${Constants.apiBaseUrl}/auth/logout"), headers: {
       "Content-Type": "application/json",
       "Authorization": "Bearer ${await Constants.getApiToken()}"
     });
