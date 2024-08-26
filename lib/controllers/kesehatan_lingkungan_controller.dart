@@ -1,7 +1,6 @@
 import 'package:client/models/kesehatan_lingkungan_model.dart';
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:client/utils/auth_user.dart';
 import 'package:client/utils/constant.dart';
@@ -51,11 +50,11 @@ class KesehatanLingkunganController with ChangeNotifier {
   }
 
   bool validateAnswer() {
+    notifyListeners();
     return _answers.every((answer) => answer['kriteria_kesehatan_id'] != 0);
   }
 
   void handleSubmit(BuildContext context) async {
-    _onSubmitting = true;
     if (!validateAnswer()) {
       Fluttertoast.showToast(
           msg: "Lengkapi seluruh jawaban dahulu",
@@ -65,9 +64,8 @@ class KesehatanLingkunganController with ChangeNotifier {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
-      _onSubmitting = false;
-      notifyListeners();
     }
+    _onSubmitting = true;
     final currentKeluarga = await AuthUser.getData('keluarga_auth');
     final response = await http
         .post(
@@ -94,11 +92,13 @@ class KesehatanLingkunganController with ChangeNotifier {
           textColor: Colors.white,
           fontSize: 16.0);
       Timer(const Duration(seconds: 1), () {
+        Navigator.of(context).pushReplacementNamed("/home-keluarga");
         _answers.clear();
         _questionIndex = 0;
-        Navigator.of(context).pushReplacementNamed("/home-keluarga");
       });
     }
+    _onSubmitting = false;
+    notifyListeners();
   }
 
   void handleChangeAnswer(Map<String, int> newAnswer) {

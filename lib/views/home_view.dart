@@ -25,7 +25,7 @@ class _HomeViewState extends State<HomeView> {
     _controller.pushLogout(context, 'keluarga_auth');
   }
 
-  void getNextTest() async {
+  Future<void> getNextTest() async {
     final nextTest = await _controller.whatNextTest();
     setState(() {
       nextRouteIfNotComplete = nextTest;
@@ -39,13 +39,11 @@ class _HomeViewState extends State<HomeView> {
     });
 
     final data = await _controller.getCurrentKeluarga();
-
+    await getNextTest();
     setState(() {
       keluargaAuth = data;
       isLoading = false;
     });
-
-    getNextTest();
   }
 
   @override

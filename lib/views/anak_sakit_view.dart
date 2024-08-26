@@ -1,8 +1,6 @@
-import 'dart:developer';
 
 import 'package:client/components/custom_alert.dart';
 import 'package:client/controllers/anak_sakit_controller.dart';
-import 'package:client/models/anak_sakit_model.dart';
 import 'package:client/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
