@@ -16,7 +16,7 @@ class OnboardingController {
     OnboardingModel(
       title: 'Bersama Cegah Stunting',
       description:
-          'Kenali stunting dan pencegahannya dengan puluhan materi yang telah kami sediakan.',
+          'Kenali stunting dan pencegahannya dengan puluhan edukasi yang telah kami sediakan.',
       image: 'assets/images/onboarding/3.png',
     ),
   ];

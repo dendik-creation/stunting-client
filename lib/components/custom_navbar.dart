@@ -10,13 +10,13 @@ class CustomNavigationBar extends StatelessWidget {
   void _onItemTapped(BuildContext context, int index) {
     switch (index) {
       case 0:
-        Navigator.of(context).pushReplacementNamed('/home-keluarga');
+        Navigator.of(context).pushNamed('/home-keluarga');
         break;
       case 1:
-        Navigator.of(context).pushReplacementNamed('/anak-sakit');
+        Navigator.of(context).pushNamed('/anak-sakit');
         break;
       case 2:
-        Navigator.of(context).pushReplacementNamed('/buku-saku');
+        Navigator.of(context).pushNamed('/buku-saku');
         break;
     }
   }
@@ -28,6 +28,7 @@ class CustomNavigationBar extends StatelessWidget {
       child: BottomNavyBar(
         selectedIndex: currentIndex,
         showElevation: true,
+        iconSize: 24.0,
         itemCornerRadius: 10.0,
         borderRadius: const BorderRadius.all(Radius.circular(18.0)),
         shadowColor: Colors.transparent,
@@ -48,7 +49,6 @@ class CustomNavigationBar extends StatelessWidget {
     return BottomNavyBarItem(
       icon: Icon(
         icon,
-        size: 32.0,
       ),
       title: Container(
           margin: const EdgeInsets.only(left: 12.0), child: Text(label)),

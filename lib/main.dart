@@ -1,3 +1,4 @@
+import 'package:client/components/push_snackbar.dart';
 import 'package:client/controllers/anak_sakit_controller.dart';
 import 'package:client/controllers/keluarga_login_controller.dart';
 import 'package:client/controllers/kemandirian_controller.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: PushSnackbar.navigatorKey,
       theme: ThemeData(fontFamily: 'Nunito Sans'),
       debugShowCheckedModeBanner: false,
       title: "Family Care Stunting",

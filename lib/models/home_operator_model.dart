@@ -9,7 +9,7 @@ class ApprovalRequest {
   final String noTelp;
   final int isApproved;
   final int isFreeStunting;
-  final String puskesmasId;
+  final int puskesmasId;
   final Puskesmas puskesmas;
 
   ApprovalRequest({

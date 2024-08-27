@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:client/components/push_snackbar.dart';
 import 'package:client/models/home_operator_model.dart';
 import 'package:client/utils/constant.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 class OperatorApprovalController {
@@ -30,14 +30,7 @@ class OperatorApprovalController {
         });
     final dynamic data = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: data['message'],
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: const Color(0xFF0a8b0d),
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      PushSnackbar.liveSnackbar(data['message'], SnackbarType.success);
 
       Timer(const Duration(milliseconds: 500), () {
         Navigator.of(context).pushNamed('/home-operator');
