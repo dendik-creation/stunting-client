@@ -139,75 +139,115 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Column latestScreening() {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text(
-            'Screening Terakhir Anda',
-            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
-          ),
-          GestureDetector(
-              onTap: () {},
-              child: Text(
-                'Lihat Semua',
-                style: TextStyle(
-                    fontSize: 14.0,
-                    color: AppColors.green[600],
-                    fontWeight: FontWeight.w600),
-              ))
-        ],
-      ),
-      const SizedBox(height: 5.0),
-      if (keluargaAuth?['screening_test']?['test_result']
-              ?['tingkat_kemandirian'] !=
-          null)
-        Text(
-            _controller.parseToIdDate(keluargaAuth?['screening_test']
-                ?['test_result']?['tingkat_kemandirian']?['tanggal']),
-            style:
-                const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500)),
-      const SizedBox(height: 15),
-      testStatus(keluargaAuth?['screening_test']?['is_complete']?['status']),
-      const SizedBox(height: 15),
-      IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+  LayoutBuilder latestScreening() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        bool isWideScreen = constraints.maxWidth > 500;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (keluargaAuth?['screening_test']?['current_test_status']
-                    ?['tingkat_kemandirian'] ==
-                true)
-              screeningItem(ScreeningItem(
-                icon: Icons.leaderboard_rounded,
-                title: _controller.parseTingkatan(
-                    keluargaAuth?['screening_test']?['test_result']
-                        ?['tingkat_kemandirian']?['tingkatan']),
-                description: 'Tingkat Kemandirian',
-                color: AppColors.green[600],
-              )),
-            if (keluargaAuth?['screening_test']?['current_test_status']
-                    ?['kesehatan_lingkungan'] ==
-                true)
-              const SizedBox(width: 15.0),
-            if (keluargaAuth?['screening_test']?['current_test_status']
-                    ?['kesehatan_lingkungan'] ==
-                true)
-              screeningItem(ScreeningItem(
-                icon: Icons.health_and_safety_rounded,
-                title: _controller.showKesehatan(
-                    keluargaAuth?['screening_test']?['test_result']
-                        ['kesehatan_lingkungan']['is_healthy'],
-                    keluargaAuth!['screening_test']!['test_result']![
-                            'kesehatan_lingkungan']!['nilai_total']
-                        .toString()),
-                description: 'Kesehatan Lingkungan',
-                color: Colors.blue[600],
-              )),
+            if (isWideScreen)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Screening Terakhir Anda',
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Text(
+                      'Lihat Semua',
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        color: AppColors.green[600],
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            else
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Screening Terakhir Anda',
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 5.0),
+                      child: Text(
+                        'Lihat Semua',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          color: AppColors.green[600],
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            const SizedBox(height: 5.0),
+            if (keluargaAuth?['screening_test']?['test_result']
+                    ?['tingkat_kemandirian'] !=
+                null)
+              Text(
+                _controller.parseToIdDate(keluargaAuth?['screening_test']
+                    ?['test_result']?['tingkat_kemandirian']?['tanggal']),
+                style: const TextStyle(
+                    fontSize: 18.0, fontWeight: FontWeight.w500),
+              ),
+            const SizedBox(height: 15),
+            testStatus(
+                keluargaAuth?['screening_test']?['is_complete']?['status']),
+            const SizedBox(height: 15),
+            IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (keluargaAuth?['screening_test']?['current_test_status']
+                          ?['tingkat_kemandirian'] ==
+                      true)
+                    screeningItem(ScreeningItem(
+                      icon: Icons.leaderboard_rounded,
+                      title: _controller.parseTingkatan(
+                          keluargaAuth?['screening_test']?['test_result']
+                              ?['tingkat_kemandirian']?['tingkatan']),
+                      description: 'Tingkat Kemandirian',
+                      color: AppColors.green[600],
+                    )),
+                  if (keluargaAuth?['screening_test']?['current_test_status']
+                          ?['kesehatan_lingkungan'] ==
+                      true)
+                    const SizedBox(width: 15.0),
+                  if (keluargaAuth?['screening_test']?['current_test_status']
+                          ?['kesehatan_lingkungan'] ==
+                      true)
+                    screeningItem(ScreeningItem(
+                      icon: Icons.health_and_safety_rounded,
+                      title: _controller.showKesehatan(
+                          keluargaAuth?['screening_test']?['test_result']
+                              ?['kesehatan_lingkungan']?['is_healthy'],
+                          keluargaAuth!['screening_test']!['test_result']![
+                                  'kesehatan_lingkungan']!['nilai_total']
+                              .toString()),
+                      description: 'Kesehatan Lingkungan',
+                      color: Colors.blue[600],
+                    )),
+                ],
+              ),
+            ),
           ],
-        ),
-      ),
-    ]);
+        );
+      },
+    );
   }
 
   CustomAlert testStatus(bool status) {

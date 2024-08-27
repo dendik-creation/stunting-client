@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
+import 'package:client/components/push_snackbar.dart';
 import 'package:client/utils/auth_user.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:client/models/kemandirian_models.dart';
@@ -59,24 +58,15 @@ class KemandirianController with ChangeNotifier {
 
   void nextQuestion(BuildContext context) {
     if (_selectedOpt == null) {
-      Fluttertoast.showToast(
-        msg: 'Isi jawaban terlebih dahulu',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red[400],
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      PushSnackbar.liveSnackbar(
+          "Isi jawaban terlebih dahulu", SnackbarType.warning);
     } else if (_selectedOpt == false) {
-      log('end_false');
       storeKemandirian(context);
     } else if (_selectedOpt == true &&
         _currentIndex + 1 == _kemandirianQuestion.length) {
-      log('full_true');
       saveAnswer();
       storeKemandirian(context);
     } else {
-      log('next');
       saveAnswer();
       _currentIndex += 1;
       if (_currentIndex >= _kemandirianQuestion.length) {
@@ -119,28 +109,15 @@ class KemandirianController with ChangeNotifier {
     });
     if (response.statusCode == 200) {
       final serverRes = jsonDecode(response.body);
-      Fluttertoast.showToast(
-        msg: serverRes['message'],
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: const Color(0xFF0a8b0d),
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      PushSnackbar.liveSnackbar(serverRes['message'], SnackbarType.success);
+
       Navigator.of(context).pushReplacementNamed(await whatNextTest());
       _currentIndex = 0;
       _answers.clear();
       _selectedOpt = null;
     } else {
       final serverRes = jsonDecode(response.body);
-      Fluttertoast.showToast(
-        msg: serverRes['message'],
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red[200],
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      PushSnackbar.liveSnackbar(serverRes['message'], SnackbarType.error);
     }
   }
 }

@@ -45,57 +45,61 @@ class _TestListViewState extends State<TestListView> {
       body: SafeArea(
         child: Padding(
             padding: const EdgeInsets.all(24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.track_changes_rounded,
-                  color: AppColors.green[600],
-                  size: 55.0,
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                const Text(
-                  'Tes yang akan Anda ikuti',
-                  style: TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 5.0,
-                ),
-                Text(
-                  "Ada ${tests.length.toString()} Form yang akan Anda jalani : ",
-                  style: const TextStyle(fontSize: 18.0),
-                ),
-                const SizedBox(height: 10.0),
-                Column(
-                  children: tests.isEmpty
-                      ? []
-                      : List.generate(
-                          tests.length,
-                          (int index) => Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 20.0),
-                                  Text(
-                                    '${index + 1}.',
-                                    style: const TextStyle(fontSize: 20.0),
-                                  ),
-                                  const SizedBox(width: 10.0),
-                                  Text(
-                                    tests[index],
-                                    style: const TextStyle(fontSize: 20.0),
-                                  ),
-                                ],
-                              )),
-                ),
-                const SizedBox(height: 20.0),
-                const Text(
-                  'Harap jawaban yang diberikan adalah benar dan sesuai.',
-                  style: TextStyle(fontSize: 18.0),
-                  softWrap: true,
-                ),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.track_changes_rounded,
+                    color: AppColors.green[600],
+                    size: 55.0,
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  const Text(
+                    'Tes yang akan Anda ikuti',
+                    style:
+                        TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.start,
+                  ),
+                  const SizedBox(
+                    height: 5.0,
+                  ),
+                  Text(
+                    "Ada ${tests.length.toString()} Form yang akan Anda jalani : ",
+                    style: const TextStyle(fontSize: 18.0),
+                    textAlign: TextAlign.start,
+                  ),
+                  const SizedBox(height: 10.0),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: tests.isEmpty
+                        ? []
+                        : List.generate(
+                            tests.length,
+                            (int index) => Column(
+                                  children: [
+                                    Text(
+                                      "${index + 1}. ${tests[index]}",
+                                      style: const TextStyle(fontSize: 20.0),
+                                      textAlign: TextAlign.start,
+                                    ),
+                                    const SizedBox(
+                                      height: 6.0,
+                                    )
+                                  ],
+                                )),
+                  ),
+                  const SizedBox(height: 20.0),
+                  const Text(
+                    'Harap jawaban yang diberikan adalah benar dan sesuai.',
+                    style: TextStyle(fontSize: 18.0),
+                    textAlign: TextAlign.start,
+                    softWrap: true,
+                  ),
+                ],
+              ),
             )),
       ),
       bottomNavigationBar: Container(

@@ -116,22 +116,12 @@ class _HomeOperatorViewState extends State<HomeOperatorView> {
 
   Column approvalReqestView() {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Permintaan Persetujuan',
             style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
-          ),
-          GestureDetector(
-            onTap: () {},
-            child: Text(
-              'Lihat Semua',
-              style: TextStyle(
-                  fontSize: 14.0,
-                  color: AppColors.green[600],
-                  fontWeight: FontWeight.w600),
-            ),
           ),
         ],
       ),
@@ -140,34 +130,37 @@ class _HomeOperatorViewState extends State<HomeOperatorView> {
           style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400)),
       const SizedBox(height: 15),
       if (approvalRequest.isNotEmpty)
-        SizedBox(
-          height: approvalRequest.length * 70.0,
-          child: ListView.builder(
-            itemCount: approvalRequest.length,
-            itemBuilder: (context, index) {
-              final approval = approvalRequest[index];
-              return Container(
-                margin: const EdgeInsets.only(bottom: 15.0),
-                decoration: BoxDecoration(
-                  color: AppColors.green[100],
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: ListTile(
-                  tileColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  leading: const Icon(Icons.account_circle, color: Colors.red),
-                  title: Text(approval.namaLengkap),
-                  trailing: const Icon(Icons.chevron_right_rounded),
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/operator-approval',
-                      arguments: approval.id.toString(),
-                    );
-                  },
-                ),
-              );
-            },
+        SingleChildScrollView(
+          child: SizedBox(
+            height: approvalRequest.length * 70.0,
+            child: ListView.builder(
+              itemCount: approvalRequest.length,
+              itemBuilder: (context, index) {
+                final approval = approvalRequest[index];
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 15.0),
+                  decoration: BoxDecoration(
+                    color: AppColors.green[100],
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: ListTile(
+                    tileColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    leading:
+                        const Icon(Icons.account_circle, color: Colors.red),
+                    title: Text(approval.namaLengkap),
+                    trailing: const Icon(Icons.chevron_right_rounded),
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/operator-approval',
+                        arguments: approval.id.toString(),
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
           ),
         )
       else

@@ -3,6 +3,7 @@ import 'package:client/components/custom_alert.dart';
 import 'package:client/controllers/anak_sakit_controller.dart';
 import 'package:client/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:provider/provider.dart';
 
 class AnakSakitView extends StatefulWidget {
@@ -13,7 +14,7 @@ class AnakSakitView extends StatefulWidget {
 }
 
 class _AnakSakitViewState extends State<AnakSakitView> {
-  final _formKey = GlobalKey<FormState>();
+  final Map<String, SingleSelectController<dynamic>> _dropdownControllers = {};
   @override
   void initState() {
     super.initState();
@@ -21,6 +22,20 @@ class _AnakSakitViewState extends State<AnakSakitView> {
       Provider.of<AnakSakitController>(context, listen: false)
           .fetchPenyakitList();
     });
+    _initializeDropdownControllers([
+      "usia",
+      "jenisKelamin",
+      "riwayatLahirAnak",
+      "ibuBekerja",
+      "pendidikanIbu",
+      "orangTuaMerokok"
+    ]);
+  }
+
+  void _initializeDropdownControllers(List<String> keys) {
+    for (var key in keys) {
+      _dropdownControllers[key] = SingleSelectController<String>(null);
+    }
   }
 
   @override
@@ -49,8 +64,7 @@ class _AnakSakitViewState extends State<AnakSakitView> {
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
-              : Form(
-                  key: _formKey,
+              : SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -73,73 +87,79 @@ class _AnakSakitViewState extends State<AnakSakitView> {
                 ),
         )),
         bottomNavigationBar: controller.penyakitList == null
-            ? const Text("")
+            ? const SizedBox.shrink()
             : Container(
                 height: 60,
+                color: Colors.white,
                 width: double.infinity,
-                margin: const EdgeInsets.all(40.0),
+                margin: const EdgeInsets.all(20.0),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0)),
-                        backgroundColor: Colors.red[300],
-                        foregroundColor: Colors.transparent,
-                        minimumSize: const Size(160.0, 60.0),
-                      ),
-                      onPressed: () {
-                        if (controller.onSubmitting == false) {
-                          controller.changeQuestion("back");
-                        }
-                      },
-                      child: const Text(
-                        "Kembali",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
+                          backgroundColor: Colors.red[300],
+                          minimumSize: const Size(160.0, 60.0),
+                        ),
+                        onPressed: () {
+                          if (!controller.onSubmitting!) {
+                            controller.changeQuestion("back");
+                          }
+                        },
+                        child: const Text(
+                          "Kembali",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600),
+                        ),
                       ),
                     ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0)),
-                        backgroundColor: AppColors.green[500]?.withOpacity(0.6),
-                        foregroundColor: Colors.transparent,
-                        minimumSize: const Size(160.0, 60.0),
-                      ),
-                      onPressed: () {
-                        if (!controller.onSubmitting!) {
-                          if (controller.currentIndex == controller.maxIndex) {
-                            controller.storeAnakSakit(context);
-                          } else {
-                            controller.changeQuestion('next');
+                    const SizedBox(width: 20.0),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
+                          backgroundColor:
+                              AppColors.green[500]?.withOpacity(0.6),
+                          minimumSize: const Size(160.0, 60.0),
+                        ),
+                        onPressed: () {
+                          if (!controller.onSubmitting!) {
+                            if (controller.currentIndex ==
+                                controller.maxIndex) {
+                              controller.storeAnakSakit(context);
+                            } else {
+                              controller.changeQuestion('next');
+                            }
                           }
-                        }
-                      },
-                      child: controller.onSubmitting!
-                          ? const SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                              ),
-                            )
-                          : Text(
-                              controller.currentIndex == controller.maxIndex
-                                  ? "Submit"
-                                  : "Selanjutnya",
-                              style: const TextStyle(
+                        },
+                        child: controller.onSubmitting!
+                            ? const SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
                                   color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600),
-                            ),
+                                ),
+                              )
+                            : Text(
+                                controller.currentIndex == controller.maxIndex
+                                    ? "Submit"
+                                    : "Berikutnya",
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                      ),
                     ),
                   ],
-                )),
+                ),
+              ),
       ),
     );
   }
@@ -195,7 +215,7 @@ class _AnakSakitViewState extends State<AnakSakitView> {
   }
 
   Widget _buildDropdownButton(String key, String label, String headLabel,
-      List<DropdownMenuItem<dynamic>> items, AnakSakitController controller) {
+      List<dynamic> items, AnakSakitController controller) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -203,44 +223,23 @@ class _AnakSakitViewState extends State<AnakSakitView> {
         const SizedBox(
           height: 10.0,
         ),
-        DropdownButtonFormField<dynamic>(
-          key: Key(key),
-          value: key == "usia" && controller.answerData!.usia != ""
-              ? controller.answerData!.usia
-              : key == "jenisKelamin" &&
-                      controller.answerData!.jenisKelamin != ""
-                  ? controller.answerData!.jenisKelamin
-                  : key == "ibuBekerja" &&
-                          controller.answerData!.ibuBekerja != null
-                      ? controller.answerData!.ibuBekerja
-                      : key == "pendidikanIbu" &&
-                              controller.answerData!.pendidikanIbu != ""
-                          ? controller.answerData!.pendidikanIbu
-                          : key == "riwayatLahirAnak" &&
-                                  controller.answerData!.riwayatLahirAnak != ""
-                              ? controller.answerData!.riwayatLahirAnak
-                              : key == "orangTuaMerokok" &&
-                                      controller.answerData!.orangTuaMerokok !=
-                                          null
-                                  ? controller.answerData!.orangTuaMerokok
-                                  : null,
-          decoration: InputDecoration(
-            labelText: label,
-            labelStyle: const TextStyle(fontSize: 14.0),
-            fillColor: Colors.white,
-            filled: true,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide:
-                  const BorderSide(color: Color(0xFF12d516), width: 2.0),
-            ),
-          ),
-          items: items.isEmpty ? [] : items.toList(),
-          validator: (value) => value == null ? 'Wajib terisi' : null,
-          onChanged: (dynamic value) {
-            controller.dropdownHandleChange(key, value);
-          },
-        ),
+        CustomDropdown(
+            key: Key(key),
+            controller: _dropdownControllers[key],
+            decoration: CustomDropdownDecoration(
+                closedBorder: Border.all(color: Colors.black54, width: 1.0)),
+            hintText: "Pilih $label",
+            items: items.map((item) => item!['label']).toList(),
+            onChanged: (dynamic selected) {
+              var selectedValue = items
+                  .firstWhere((item) => item['label'] == selected)!['value'];
+              controller.dropdownHandleChange(key, selectedValue);
+              if (mounted) {
+                setState(() {
+                  _dropdownControllers[key]!.value = selected;
+                });
+              }
+            }),
         const SizedBox(
           height: 30.0,
         )
@@ -293,8 +292,7 @@ class _AnakSakitViewState extends State<AnakSakitView> {
     );
   }
 
-  Expanded quest0(AnakSakitController controller) => Expanded(
-          child: Column(
+  Column quest0(AnakSakitController controller) => Column(
         children: [
           _buildTextField("namaAnak", "Nama", "Siapa nama anak Anda",
               Icons.child_care_rounded, TextInputType.text, controller),
@@ -303,22 +301,22 @@ class _AnakSakitViewState extends State<AnakSakitView> {
               "Usia",
               "Berapa usianya",
               [
-                const DropdownMenuItem(
-                  value: "1-23",
-                  child: Text("1 - 23 Bulan"),
-                ),
-                const DropdownMenuItem(
-                  value: "24-36",
-                  child: Text("24 - 36 Bulan"),
-                ),
-                const DropdownMenuItem(
-                  value: "37-48",
-                  child: Text("37 - 48 Bulan"),
-                ),
-                const DropdownMenuItem(
-                  value: "49-60",
-                  child: Text("49 - 60 Bulan"),
-                ),
+                {
+                  "label": "1-23 Bulan",
+                  "value": "1-23",
+                },
+                {
+                  "label": "24-36 Bulan",
+                  "value": "24-36",
+                },
+                {
+                  "label": "37-48 Bulan",
+                  "value": "37-48",
+                },
+                {
+                  "label": "49-60 Bulan",
+                  "value": "49-60",
+                }
               ],
               controller),
           _buildDropdownButton(
@@ -326,21 +324,20 @@ class _AnakSakitViewState extends State<AnakSakitView> {
               "Jenis kelamin",
               "Jenis kelamin anak Anda",
               [
-                const DropdownMenuItem(
-                  value: "L",
-                  child: Text("Laki-laki"),
-                ),
-                const DropdownMenuItem(
-                  value: "P",
-                  child: Text("Perempuan"),
-                ),
+                {
+                  "label": "Laki-laki",
+                  "value": "L",
+                },
+                {
+                  "label": "Perempuan",
+                  "value": "P",
+                }
               ],
               controller),
         ],
-      ));
+      );
 
-  Expanded quest1(AnakSakitController controller) => Expanded(
-          child: Column(
+  Column quest1(AnakSakitController controller) => Column(
         children: [
           _buildTextField(
               "tinggiBadan",
@@ -361,35 +358,34 @@ class _AnakSakitViewState extends State<AnakSakitView> {
               "Riwayat kelahiran",
               "Bagaimana riwayat berat badan ketika lahir",
               [
-                const DropdownMenuItem(
-                  value: "normal",
-                  child: Text("Normal (lebih dari 2,5 kg)"),
-                ),
-                const DropdownMenuItem(
-                  value: "rendah",
-                  child: Text("Rendah (kurang dari 2,5 kg)"),
-                ),
+                {
+                  "label": "Normal (Lebih dari 2,5 kg)",
+                  "value": "normal",
+                },
+                {
+                  "label": "Rendah (kurang dari 2,5 kg)",
+                  "value": "rendah",
+                }
               ],
               controller),
         ],
-      ));
+      );
 
-  Expanded quest2(AnakSakitController controller) => Expanded(
-          child: Column(
+  Column quest2(AnakSakitController controller) => Column(
         children: [
           _buildDropdownButton(
               "ibuBekerja",
               "Ibu bekerja",
               "Apakah Ibu bekerja",
               [
-                const DropdownMenuItem(
-                  value: true,
-                  child: Text("Ya"),
-                ),
-                const DropdownMenuItem(
-                  value: false,
-                  child: Text("Tidak"),
-                ),
+                {
+                  "label": "Ya",
+                  "value": true,
+                },
+                {
+                  "label": "Tidak",
+                  "value": false,
+                }
               ],
               controller),
           _buildDropdownButton(
@@ -397,18 +393,18 @@ class _AnakSakitViewState extends State<AnakSakitView> {
               "Pendidikan Ibu",
               "Apa pendidikan terakhir Ibu",
               [
-                const DropdownMenuItem(
-                  value: "SMP",
-                  child: Text("SMP"),
-                ),
-                const DropdownMenuItem(
-                  value: "SMA",
-                  child: Text("SMA"),
-                ),
-                const DropdownMenuItem(
-                  value: "Sarjana",
-                  child: Text("Sarjana"),
-                ),
+                {
+                  "label": "SMP",
+                  "value": "SMP",
+                },
+                {
+                  "label": "SMA",
+                  "value": "SMA",
+                },
+                {
+                  "label": "Sarjana",
+                  "value": "Sarjana",
+                },
               ],
               controller),
           _buildDropdownButton(
@@ -416,30 +412,28 @@ class _AnakSakitViewState extends State<AnakSakitView> {
               "Orang tua merokok",
               "Apakah orang tua merokok",
               [
-                const DropdownMenuItem(
-                  value: true,
-                  child: Text("Ya"),
-                ),
-                const DropdownMenuItem(
-                  value: false,
-                  child: Text("Tidak"),
-                ),
+                {
+                  "label": "Ya",
+                  "value": true,
+                },
+                {
+                  "label": "Tidak",
+                  "value": false,
+                }
               ],
               controller),
         ],
-      ));
+      );
 
-  Expanded quest3(dynamic listPenyerta, AnakSakitController controller) =>
-      Expanded(
-          child: Column(children: [
+  Column quest3(dynamic listPenyerta, AnakSakitController controller) =>
+      Column(children: [
         _buildMultipleCheckbox(listPenyerta, controller,
             "Penyakit penyerta yang diderita anak Anda", "penyerta")
-      ]));
+      ]);
 
-  Expanded quest4(dynamic listKomplikasi, AnakSakitController controller) =>
-      Expanded(
-          child: Column(children: [
+  Column quest4(dynamic listKomplikasi, AnakSakitController controller) =>
+      Column(children: [
         _buildMultipleCheckbox(listKomplikasi, controller,
             "Riwayat penyakit komplikasi kehamilan Ibu", "komplikasi")
-      ]));
+      ]);
 }

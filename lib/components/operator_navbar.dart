@@ -26,6 +26,7 @@ class OperatorNavbar extends StatelessWidget {
         selectedIndex: currentIndex,
         showElevation: true,
         itemCornerRadius: 10.0,
+        iconSize: 24.0,
         borderRadius: const BorderRadius.all(Radius.circular(18.0)),
         shadowColor: Colors.transparent,
         containerHeight: 60.0,
@@ -44,7 +45,6 @@ class OperatorNavbar extends StatelessWidget {
     return BottomNavyBarItem(
       icon: Icon(
         icon,
-        size: 32.0,
       ),
       title: Container(
           margin: const EdgeInsets.only(left: 12.0), child: Text(label)),
