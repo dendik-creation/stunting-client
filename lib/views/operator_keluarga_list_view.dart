@@ -35,11 +35,10 @@ class _OperatorKeluargaListState extends State<OperatorKeluargaListView> {
   }
 
   Future<void> _refreshPage() async {
+    await Future.delayed(const Duration(seconds: 2));
     setState(() {
       _keluargaList.clear();
     });
-
-    await Future.delayed(const Duration(seconds: 2));
     await getKeluargaList();
   }
 
@@ -102,7 +101,11 @@ class _OperatorKeluargaListState extends State<OperatorKeluargaListView> {
                         const SizedBox(
                           height: 30.0,
                         ),
-                        _buildKeluargaView()
+                        _keluargaList.isNotEmpty
+                            ? _buildKeluargaView()
+                            : const Text(
+                                'Tidak ada data keluarga yang disetujui',
+                              ),
                       ],
                     ),
                   ),
