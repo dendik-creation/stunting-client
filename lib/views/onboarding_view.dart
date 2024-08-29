@@ -157,8 +157,10 @@ class _OnboardingViewState extends State<OnboardingView> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
         contentLength,
-        (index) => Container(
+        (index) => AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
           height: 10.0,
+          curve: Curves.easeInOut,
           margin: const EdgeInsets.only(right: 10.0),
           width: currentIndex == index ? 30.0 : 10.0,
           decoration: BoxDecoration(

@@ -5,6 +5,7 @@ import 'package:client/controllers/kemandirian_controller.dart';
 import 'package:client/controllers/kesehatan_lingkungan_controller.dart';
 import 'package:client/controllers/operator_home_controller.dart';
 import 'package:client/controllers/operator_login_controller.dart';
+import 'package:client/controllers/screening_test_result_controller.dart';
 import 'package:client/views/anak_sakit_view.dart';
 import 'package:client/views/home_operator_view.dart';
 import 'package:client/views/home_view.dart';
@@ -13,7 +14,11 @@ import 'package:client/views/kesehatan_lingkungan_view.dart';
 import 'package:client/views/login_operator_view.dart';
 import 'package:client/views/onboarding_view.dart';
 import 'package:client/views/operator_approval_view.dart';
+import 'package:client/views/operator_keluarga_detail_view.dart';
+import 'package:client/views/operator_keluarga_list_view.dart';
 import 'package:client/views/register_view.dart';
+import 'package:client/views/result_test_detail_view.dart';
+import 'package:client/views/result_test_list_view.dart';
 import 'package:client/views/splash_view.dart';
 import 'package:client/views/test_kemandirian_view.dart';
 import 'package:client/views/test_list_view.dart';
@@ -39,6 +44,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => OperatorHomeController()),
         ChangeNotifierProvider(create: (_) => AnakSakitController()),
         ChangeNotifierProvider(create: (_) => KesehatanLingkunganController()),
+        ChangeNotifierProvider(create: (_) => ScreeningTestResultController()),
       ],
       child: const MyApp(),
     ),
@@ -63,12 +69,18 @@ class MyApp extends StatelessWidget {
         '/login-operator': (context) => const LoginOperatorView(),
         '/home-keluarga': (context) => const HomeView(),
         '/home-operator': (context) => const HomeOperatorView(),
+        '/operator-keluarga-list': (context) =>
+            const OperatorKeluargaListView(),
+        '/operator-keluarga-detail': (context) =>
+            const OperatorKeluargaDetailView(),
         '/operator-approval': (context) => const OperatorApprovalView(),
         '/test-list': (context) => const TestListView(),
         '/test-kemandirian': (context) => const TestKemandirianView(),
         '/test-anak-sakit': (context) => const AnakSakitView(),
         '/test-kesehatan-lingkungan': (context) =>
             const KesehatanLingkunganView(),
+        '/result-test-list': (context) => const ResultTestListView(),
+        '/result-test-detail': (context) => const ResultTestDetailView(),
       },
     );
   }

@@ -38,6 +38,14 @@ class _HomeOperatorViewState extends State<HomeOperatorView> {
     });
   }
 
+  Future<void> _refreshPage() async {
+    await Future.delayed(const Duration(seconds: 2));
+    setState(() {
+      approvalRequest.clear();
+    });
+    getInitial();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -93,11 +101,7 @@ class _HomeOperatorViewState extends State<HomeOperatorView> {
             : RefreshIndicator(
                 backgroundColor: AppColors.green[100],
                 color: AppColors.green[600],
-                onRefresh: () async {
-                  Timer(const Duration(milliseconds: 400), () {
-                    getInitial();
-                  });
-                },
+                onRefresh: _refreshPage,
                 child: Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: ListView(
