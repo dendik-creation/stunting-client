@@ -1,4 +1,4 @@
-
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:client/controllers/operator_approval_controller.dart';
 import 'package:client/models/home_operator_model.dart';
 import 'package:client/utils/theme.dart';
@@ -52,62 +52,67 @@ class _OperatorApprovalViewState extends State<OperatorApprovalView> {
     }
 
     return Scaffold(
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Container(
-              margin: const EdgeInsets.only(top: 60.0),
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.verified_user_rounded,
-                      size: 65.0,
-                      color: AppColors.green[500],
-                    ),
-                    const SizedBox(
-                      height: 15.0,
-                    ),
-                    confirmTitle(),
-                    const SizedBox(
-                      height: 25.0,
-                    ),
-                    Column(
+      body: SafeArea(
+        child: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+                child: Container(
+                  margin: const EdgeInsets.only(top: 60.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        buildData('NIK', approvalRequest.nik),
-                        const SizedBox(
-                          height: 10.0,
+                        Icon(
+                          Icons.verified_user_rounded,
+                          size: 65.0,
+                          color: AppColors.green[500],
                         ),
-                        buildData('Nama Lengkap', approvalRequest.namaLengkap),
                         const SizedBox(
-                          height: 10.0,
+                          height: 15.0,
                         ),
-                        buildData('No. Telepon', approvalRequest.noTelp),
+                        confirmTitle(),
                         const SizedBox(
-                          height: 10.0,
+                          height: 25.0,
                         ),
-                        buildData('Desa',
-                            "${approvalRequest.desa} - RT ${approvalRequest.rt} / RW ${approvalRequest.rw}"),
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                        buildData('Alamat Lengkap', approvalRequest.alamat),
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                        buildData('Puskesmas Pengampu',
-                            approvalRequest.puskesmas.namaPuskesmas),
-                        const SizedBox(
-                          height: 10.0,
-                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            buildData('NIK', approvalRequest.nik),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            buildData(
+                                'Nama Lengkap', approvalRequest.namaLengkap),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            buildData('No. Telepon', approvalRequest.noTelp),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            buildData('Desa',
+                                "${approvalRequest.desa} - RT ${approvalRequest.rt} / RW ${approvalRequest.rw}"),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            buildData('Alamat Lengkap', approvalRequest.alamat),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            buildData('Puskesmas Pengampu',
+                                approvalRequest.puskesmas.namaPuskesmas),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                          ],
+                        )
                       ],
-                    )
-                  ],
+                    ),
+                  ),
                 ),
               ),
-            ),
+      ),
       bottomNavigationBar: isLoading ? null : confirmButton(id),
     );
   }
@@ -123,7 +128,16 @@ class _OperatorApprovalViewState extends State<OperatorApprovalView> {
               ? const Color(0xFF12d516).withOpacity(0.2)
               : const Color(0xFF12d516),
         ),
-        onPressed: () => isSubmitting ? null : confirmApproval(id, context),
+        onPressed: () => isSubmitting
+            ? null
+            : AwesomeDialog(
+                context: context,
+                dialogType: DialogType.warning,
+                animType: AnimType.bottomSlide,
+                title: 'Konfirmasi Data',
+                desc: 'Apakah Anda yakin ingin menyetujui data ini?',
+                btnCancelOnPress: () {},
+                btnOkOnPress: () => confirmApproval(id, context)).show(),
         child: isSubmitting
             ? const SizedBox(
                 width: 24,

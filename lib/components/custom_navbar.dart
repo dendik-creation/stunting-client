@@ -1,13 +1,38 @@
 import 'package:client/utils/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:motion_tab_bar/MotionTabBarController.dart';
+import 'package:motion_tab_bar/motiontabbar.dart';
 
-class CustomNavigationBar extends StatelessWidget {
+class CustomNavigationBar extends StatefulWidget {
   final int currentIndex;
 
   const CustomNavigationBar({super.key, required this.currentIndex});
 
+  @override
+  _CustomNavigationBarState createState() => _CustomNavigationBarState();
+}
+
+class _CustomNavigationBarState extends State<CustomNavigationBar>
+    with TickerProviderStateMixin {
+  late int _currentIndex;
+  List<String> tabList = ['Beranda', 'Anak Sakit', 'Hasil Tes', 'Buku Saku'];
+  MotionTabBarController? _motionTabBarController;
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.currentIndex;
+    _motionTabBarController = MotionTabBarController(
+      initialIndex: 0,
+      length: tabList.length,
+      vsync: this,
+    );
+  }
+
   void _onItemTapped(BuildContext context, int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+
     switch (index) {
       case 0:
         Navigator.of(context).pushNamed('/home-keluarga');
@@ -16,6 +41,9 @@ class CustomNavigationBar extends StatelessWidget {
         Navigator.of(context).pushNamed('/anak-sakit');
         break;
       case 2:
+        Navigator.of(context).pushNamed('/result-test-list');
+        break;
+      case 3:
         Navigator.of(context).pushNamed('/buku-saku');
         break;
     }
@@ -23,37 +51,28 @@ class CustomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(10.0),
-      child: BottomNavyBar(
-        selectedIndex: currentIndex,
-        showElevation: true,
-        iconSize: 24.0,
-        itemCornerRadius: 10.0,
-        borderRadius: const BorderRadius.all(Radius.circular(18.0)),
-        shadowColor: Colors.transparent,
-        containerHeight: 60.0,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        backgroundColor: Colors.transparent,
-        onItemSelected: (index) => _onItemTapped(context, index),
-        items: [
-          navbarItem(Icons.home, 'Beranda'),
-          navbarItem(Icons.sick_rounded, 'Anak Sakit'),
-          navbarItem(Icons.menu_book_rounded, 'Buku Saku'),
-        ],
+    return MotionTabBar(
+      labels: tabList,
+      controller: _motionTabBarController,
+      initialSelectedTab: tabList[_currentIndex],
+      icons: const [
+        Icons.home,
+        Icons.sick_rounded,
+        Icons.track_changes_rounded,
+        Icons.menu_book_rounded
+      ],
+      tabIconColor: AppColors.green[500]!,
+      tabSelectedColor: AppColors.green[600]!,
+      textStyle: TextStyle(
+        color: AppColors.green[600],
+        fontWeight: FontWeight.bold,
       ),
-    );
-  }
-
-  BottomNavyBarItem navbarItem(IconData icon, String label) {
-    return BottomNavyBarItem(
-      icon: Icon(
-        icon,
-      ),
-      title: Container(
-          margin: const EdgeInsets.only(left: 12.0), child: Text(label)),
-      activeColor: AppColors.green[700]!,
-      inactiveColor: AppColors.green[400]!,
+      onTabItemSelected: (int index) {
+        _onItemTapped(context, index);
+        setState(() {
+          _motionTabBarController!.index = index;
+        });
+      },
     );
   }
 }

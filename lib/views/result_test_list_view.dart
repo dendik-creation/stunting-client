@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:client/components/custom_navbar.dart';
 import 'package:client/components/operator_navbar.dart';
 import 'package:client/controllers/screening_test_result_controller.dart';
 import 'package:client/models/screening_test_result_model.dart';
@@ -86,7 +87,12 @@ class _KeluargaResultTestListViewState extends State<ResultTestListView> {
                 ),
               ),
       ),
-      bottomNavigationBar: const OperatorNavbar(currentIndex: 1),
+      bottomNavigationBar: controller.testList == null
+          ? null
+          : controller.isOperatorAction
+              ? const OperatorNavbar(currentIndex: 1)
+              : const PopScope(
+                  canPop: false, child: CustomNavigationBar(currentIndex: 2)),
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:client/components/custom_navbar.dart';
 import 'package:client/components/operator_navbar.dart';
 import 'package:client/controllers/screening_test_result_controller.dart';
 import 'package:client/models/screening_test_result_model.dart';
@@ -81,13 +82,18 @@ class _ResultTestDetailViewState extends State<ResultTestDetailView> {
                 ],
               ),
       ),
-      bottomNavigationBar: const OperatorNavbar(currentIndex: 1),
+      bottomNavigationBar: controller.testList == null
+          ? null
+          : controller.isOperatorAction
+              ? const OperatorNavbar(currentIndex: 1)
+              : const CustomNavigationBar(currentIndex: 2),
     );
   }
 
-  Padding _buildDot(int contentLength) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
+  Container _buildDot(int contentLength) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      padding: const EdgeInsets.only(bottom: 15.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: List.generate(
