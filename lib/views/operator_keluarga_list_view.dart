@@ -62,52 +62,55 @@ class _OperatorKeluargaListState extends State<OperatorKeluargaListView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: onLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Container(
-                  margin: const EdgeInsets.only(top: 30.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.family_restroom_rounded,
-                        size: 84.0,
-                        color: AppColors.green[500],
-                      ),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      const Text(
-                        "Data Keluarga",
-                        style: TextStyle(
-                            fontSize: 32.0, fontWeight: FontWeight.w600),
-                      ),
-                      const SizedBox(
-                        height: 5.0,
-                      ),
-                      const Text(
-                        "Pantau hasil tes screening keluarga",
-                        style: TextStyle(
-                            fontSize: 18.0, fontWeight: FontWeight.normal),
-                      ),
-                      const SizedBox(
-                        height: 30.0,
-                      ),
-                      _buildKeluargaView()
-                    ],
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: onLoading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 30.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.family_restroom_rounded,
+                          size: 84.0,
+                          color: AppColors.green[500],
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        const Text(
+                          "Data Keluarga",
+                          style: TextStyle(
+                              fontSize: 32.0, fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(
+                          height: 5.0,
+                        ),
+                        const Text(
+                          "Pantau hasil tes screening keluarga",
+                          style: TextStyle(
+                              fontSize: 18.0, fontWeight: FontWeight.normal),
+                        ),
+                        const SizedBox(
+                          height: 30.0,
+                        ),
+                        _buildKeluargaView()
+                      ],
+                    ),
                   ),
                 ),
-              ),
-      ),
-      bottomNavigationBar: const OperatorNavbar(
-        currentIndex: 1,
+        ),
+        bottomNavigationBar: const OperatorNavbar(
+          currentIndex: 1,
+        ),
       ),
     );
   }

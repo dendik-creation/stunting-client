@@ -95,7 +95,6 @@ class _HomeViewState extends State<HomeView> {
                   btnOkOnPress: () {
                     keluargaLogout();
                   },
-                  btnOkColor: AppColors.green[600],
                 ).show();
               },
             ),

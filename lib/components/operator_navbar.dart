@@ -1,11 +1,36 @@
 import 'package:client/utils/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:motion_tab_bar/MotionTabBarController.dart';
+import 'package:motion_tab_bar/motiontabbar.dart';
 
-class OperatorNavbar extends StatelessWidget {
+class OperatorNavbar extends StatefulWidget {
   final int currentIndex;
 
   const OperatorNavbar({super.key, required this.currentIndex});
+
+  @override
+  State<OperatorNavbar> createState() => _OperatorNavbarState();
+}
+
+class _OperatorNavbarState extends State<OperatorNavbar>
+    with TickerProviderStateMixin {
+  late int _currentIndex;
+  List<String> tabList = ['Beranda', 'Data Keluarga'];
+  List<IconData> tabIcons = [
+    Icons.home,
+    Icons.family_restroom_rounded,
+  ];
+  MotionTabBarController? _motionTabBarController;
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.currentIndex;
+    _motionTabBarController = MotionTabBarController(
+      initialIndex: 0,
+      length: tabList.length,
+      vsync: this,
+    );
+  }
 
   void _onItemTapped(BuildContext context, int index) {
     switch (index) {
@@ -20,36 +45,23 @@ class OperatorNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(10.0),
-      child: BottomNavyBar(
-        selectedIndex: currentIndex,
-        showElevation: true,
-        itemCornerRadius: 10.0,
-        iconSize: 24.0,
-        borderRadius: const BorderRadius.all(Radius.circular(18.0)),
-        shadowColor: Colors.transparent,
-        containerHeight: 60.0,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        backgroundColor: Colors.transparent,
-        onItemSelected: (index) => _onItemTapped(context, index),
-        items: [
-          navbarItem(Icons.home, 'Beranda'),
-          navbarItem(Icons.family_restroom_rounded, 'Keluarga'),
-        ],
+    return MotionTabBar(
+      labels: tabList,
+      controller: _motionTabBarController,
+      initialSelectedTab: tabList[_currentIndex],
+      icons: tabIcons,
+      tabIconColor: AppColors.green[500]!,
+      tabSelectedColor: AppColors.green[600]!,
+      textStyle: TextStyle(
+        color: AppColors.green[600],
+        fontWeight: FontWeight.bold,
       ),
-    );
-  }
-
-  BottomNavyBarItem navbarItem(IconData icon, String label) {
-    return BottomNavyBarItem(
-      icon: Icon(
-        icon,
-      ),
-      title: Container(
-          margin: const EdgeInsets.only(left: 12.0), child: Text(label)),
-      activeColor: AppColors.green[700]!,
-      inactiveColor: AppColors.green[400]!,
+      onTabItemSelected: (int index) {
+        _onItemTapped(context, index);
+        setState(() {
+          _motionTabBarController!.index = index;
+        });
+      },
     );
   }
 }
