@@ -10,10 +10,10 @@ class OperatorNavbar extends StatelessWidget {
   void _onItemTapped(BuildContext context, int index) {
     switch (index) {
       case 0:
-        Navigator.of(context).pushReplacementNamed('/home-operator');
+        Navigator.of(context).pushNamed('/home-operator');
         break;
       case 1:
-        Navigator.of(context).pushReplacementNamed('/keluarga-list');
+        Navigator.of(context).pushNamed('/operator-keluarga-list');
         break;
     }
   }
