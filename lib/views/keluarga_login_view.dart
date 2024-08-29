@@ -116,6 +116,7 @@ class _KeluargaLoginViewState extends State<KeluargaLoginView> {
                           },
                           child: Text(
                             "Saya pertama kali menggunakan aplikasi",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.green[300],

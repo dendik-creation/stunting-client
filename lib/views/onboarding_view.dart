@@ -62,42 +62,55 @@ class _OnboardingViewState extends State<OnboardingView> {
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: const EdgeInsets.all(40.0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: _operatorAction,
-                          child: Container(
-                            margin: const EdgeInsets.only(top: 20.0),
-                            child: Image.asset(
-                              contents[index].image,
-                              height: 400,
-                              width: 400,
-                            ),
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              contents[index].title,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  fontSize: 35, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              contents[index].description,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.normal,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: _operatorAction,
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 20.0),
+                              child: Image.asset(
+                                contents[index].image,
+                                height: 400 /
+                                    MediaQuery.textScalerOf(context).scale(1.2),
+                                width: 400 /
+                                    MediaQuery.textScalerOf(context).scale(1.2),
                               ),
                             ),
-                          ],
-                        )
-                      ],
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                contents[index].title,
+                                textAlign: TextAlign.center,
+                                textScaler: TextScaler.linear(
+                                    MediaQuery.textScalerOf(context)
+                                        .scale(1.0)),
+                                style: const TextStyle(
+                                    fontSize: 35, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                contents[index].description,
+                                textScaler: TextScaler.linear(
+                                    MediaQuery.textScalerOf(context)
+                                        .scale(1.0)),
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -144,8 +157,10 @@ class _OnboardingViewState extends State<OnboardingView> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
         contentLength,
-        (index) => Container(
+        (index) => AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
           height: 10.0,
+          curve: Curves.easeInOut,
           margin: const EdgeInsets.only(right: 10.0),
           width: currentIndex == index ? 30.0 : 10.0,
           decoration: BoxDecoration(

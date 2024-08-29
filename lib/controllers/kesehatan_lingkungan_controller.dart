@@ -1,3 +1,4 @@
+import 'package:client/components/push_snackbar.dart';
 import 'package:client/models/kesehatan_lingkungan_model.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -5,7 +6,6 @@ import 'dart:convert';
 import 'package:client/utils/auth_user.dart';
 import 'package:client/utils/constant.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 class KesehatanLingkunganController with ChangeNotifier {
@@ -35,8 +35,6 @@ class KesehatanLingkunganController with ChangeNotifier {
         };
       }).toList();
       notifyListeners();
-    } else {
-      throw Exception('Failed to load questions');
     }
   }
 
@@ -56,14 +54,9 @@ class KesehatanLingkunganController with ChangeNotifier {
 
   void handleSubmit(BuildContext context) async {
     if (!validateAnswer()) {
-      Fluttertoast.showToast(
-          msg: "Lengkapi seluruh jawaban dahulu",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      PushSnackbar.liveSnackbar(
+          "Lengkapi seluruh jawaban dahulu", SnackbarType.warning);
+      return;
     }
     _onSubmitting = true;
     final currentKeluarga = await AuthUser.getData('keluarga_auth');
@@ -83,14 +76,8 @@ class KesehatanLingkunganController with ChangeNotifier {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      Fluttertoast.showToast(
-          msg: data['message'],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: const Color(0xFF0a8b0d),
-          textColor: Colors.white,
-          fontSize: 16.0);
+      PushSnackbar.liveSnackbar(data['message'], SnackbarType.success);
+
       Timer(const Duration(seconds: 1), () {
         Navigator.of(context).pushReplacementNamed("/home-keluarga");
         _answers.clear();

@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:client/components/push_snackbar.dart';
 import 'package:client/models/anak_sakit_model.dart';
 import 'package:client/utils/constant.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:client/utils/auth_user.dart';
 import 'package:http/http.dart' as http;
 
@@ -141,14 +141,8 @@ class AnakSakitController with ChangeNotifier {
     if (validateData()) {
       submitData(context);
     } else {
-      Fluttertoast.showToast(
-        msg: 'Lengkapi data terlebih dahulu',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: const Color.fromARGB(255, 190, 12, 12),
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      PushSnackbar.liveSnackbar(
+          "Lengkapi form terlebih dahulu", SnackbarType.warning);
     }
     notifyListeners();
   }
@@ -169,14 +163,8 @@ class AnakSakitController with ChangeNotifier {
     });
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      Fluttertoast.showToast(
-        msg: data['message'],
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: const Color.fromARGB(255, 190, 12, 12),
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      PushSnackbar.liveSnackbar(data['message'], SnackbarType.success);
+
       Timer(const Duration(seconds: 1), () {
         _currentIndex = 0;
         _answerData = AnakSakitModel(

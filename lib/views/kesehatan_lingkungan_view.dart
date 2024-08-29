@@ -148,7 +148,7 @@ class _KesehatanLingkunganViewState extends State<KesehatanLingkunganView> {
                         controller.questionIndex ==
                                 controller.questions.length - 1
                             ? "Submit"
-                            : "Selanjutnya",
+                            : "Berikutnya",
                         style: const TextStyle(
                             color: Colors.white,
                             fontSize: 18,
