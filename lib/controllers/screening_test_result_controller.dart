@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:client/models/screening_test_result_model.dart';
 import 'package:client/utils/auth_user.dart';

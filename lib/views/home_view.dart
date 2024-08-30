@@ -44,7 +44,9 @@ class _HomeViewState extends State<HomeView> {
     });
 
     final data = await _controller.getCurrentKeluarga();
-    await getNextTest();
+    if (data!['screening_test']['current_step'] < 2) {
+      await getNextTest();
+    }
     setState(() {
       keluargaAuth = data;
       isLoading = false;
@@ -121,9 +123,32 @@ class _HomeViewState extends State<HomeView> {
                             if (keluargaAuth?['screening_test']?['test_result']
                                     ?['tingkat_kemandirian'] ==
                                 null)
-                              testCTA(
-                                  step: keluargaAuth?['screening_test']
-                                      ?['current_step'])
+                              Column(children: [
+                                if (keluargaAuth?['screening_test']
+                                            ?['current_step'] ==
+                                        2 &&
+                                    keluargaAuth?['screening_test']
+                                                ?['test_result']
+                                            ?['tingkat_kemandirian'] ==
+                                        null)
+                                  GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context)
+                                            .pushNamed('/result-test-list');
+                                      },
+                                      child: Container(
+                                        margin:
+                                            const EdgeInsets.only(bottom: 15.0),
+                                        child: CustomAlert(
+                                          title: "Lihat Hasil Tes",
+                                          routeUrl: "/result-test-list",
+                                          color: Colors.blue[600],
+                                        ),
+                                      )),
+                                testCTA(
+                                    step: keluargaAuth?['screening_test']
+                                        ?['current_step']),
+                              ])
                             else
                               latestScreening(),
                             const SizedBox(height: 24.0),
@@ -150,6 +175,16 @@ class _HomeViewState extends State<HomeView> {
               'Screening Terakhir Anda',
               style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
             ),
+            const SizedBox(height: 5.0),
+            if (keluargaAuth?['screening_test']?['test_result']
+                    ?['tingkat_kemandirian'] !=
+                null)
+              Text(
+                _controller.parseToIdDate(keluargaAuth?['screening_test']
+                    ?['test_result']?['tingkat_kemandirian']?['tanggal']),
+                style: const TextStyle(
+                    fontSize: 18.0, fontWeight: FontWeight.w500),
+              ),
             GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushNamed('/result-test-list');
@@ -157,24 +192,15 @@ class _HomeViewState extends State<HomeView> {
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 6.0),
                   child: CustomAlert(
-                    title: "Lihat Semua Tes",
+                    title: "Lihat Hasil Tes",
                     routeUrl: "/result-test-list",
                     color: Colors.blue[600],
                   ),
                 ))
           ],
         ),
-        const SizedBox(height: 5.0),
-        if (keluargaAuth?['screening_test']?['test_result']
-                ?['tingkat_kemandirian'] !=
-            null)
-          Text(
-            _controller.parseToIdDate(keluargaAuth?['screening_test']
-                ?['test_result']?['tingkat_kemandirian']?['tanggal']),
-            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
-          ),
-        const SizedBox(height: 15),
-        testStatus(keluargaAuth?['screening_test']?['is_complete']?['status']),
+        const SizedBox(height: 5),
+        testStatus(keluargaAuth?['screening_test']?['is_complete']),
         const SizedBox(height: 15),
         IntrinsicHeight(
           child: Row(
@@ -216,12 +242,19 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  CustomAlert testStatus(bool status) {
-    if (status == true) {
-      return CustomAlert(
-        title:
-            "Tes Berikutnya pada ${_controller.parseToIdDate(keluargaAuth?['screening_test']?['is_complete']?['next_test'])}",
-      );
+  CustomAlert testStatus(dynamic isComplete) {
+    if (isComplete['status']) {
+      if (isComplete.containsKey('is_done')) {
+        return CustomAlert(
+          title: isComplete['done_message'],
+          color: !isComplete['is_good'] ? Colors.red[600] : null,
+        );
+      } else {
+        return CustomAlert(
+          title:
+              "Tes Berikutnya pada ${_controller.parseToIdDate(keluargaAuth?['screening_test']?['is_complete']?['next_test'])}",
+        );
+      }
     } else {
       return CustomAlert(
           title: "Ada tes yang belum diselesaikan",
