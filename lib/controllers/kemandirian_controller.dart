@@ -110,8 +110,11 @@ class KemandirianController with ChangeNotifier {
     if (response.statusCode == 200) {
       final serverRes = jsonDecode(response.body);
       PushSnackbar.liveSnackbar(serverRes['message'], SnackbarType.success);
-
-      Navigator.of(context).pushReplacementNamed(await whatNextTest());
+      if (currentKeluarga!['screening_test']['current_step'] < 2) {
+        Navigator.of(context).pushReplacementNamed(await whatNextTest());
+      } else {
+        Navigator.of(context).pushReplacementNamed('/home-keluarga');
+      }
       _currentIndex = 0;
       _answers.clear();
       _selectedOpt = null;

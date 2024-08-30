@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:developer';
 
+import 'package:client/components/custom_alert.dart';
 import 'package:client/components/custom_navbar.dart';
 import 'package:client/components/operator_navbar.dart';
 import 'package:client/controllers/screening_test_result_controller.dart';
@@ -80,6 +80,10 @@ class _KeluargaResultTestListViewState extends State<ResultTestListView> {
                         const SizedBox(height: 5.0),
                         keluargaName(controller),
                         const SizedBox(height: 30.0),
+                        if (controller.testList!.screeningTest.length >= 2)
+                          _buildResult(
+                              controller.testList!.screeningTest, controller),
+                        const SizedBox(height: 15.0),
                         _buildTestList(controller),
                       ],
                     ),
@@ -94,6 +98,31 @@ class _KeluargaResultTestListViewState extends State<ResultTestListView> {
               : const PopScope(
                   canPop: false, child: CustomNavigationBar(currentIndex: 2)),
     );
+  }
+
+  CustomAlert _buildResult(
+      List<TestListData> testList, ScreeningTestResultController controller) {
+    // Latest test sort
+    if (int.parse(testList[0].tingkatKemandirian.tingkatan) >
+        int.parse(testList[1].tingkatKemandirian.tingkatan)) {
+      return CustomAlert(
+        title:
+            "${controller.isOperatorAction ? 'Keluarga ini' : 'Anda'} mengalami peningkatan dari tes sebelumnya. Dengan ini tes  berhasil dan berakhir.",
+      );
+    } else if (int.parse(testList[1].tingkatKemandirian.tingkatan) ==
+        int.parse(testList[0].tingkatKemandirian.tingkatan)) {
+      return CustomAlert(
+        color: Colors.red[600],
+        title:
+            "${controller.isOperatorAction ? 'Keluarga ini' : 'Anda'} tidak mengalami peningkatan dari tes sebelumnya. Dengan ini tes berakhir.",
+      );
+    } else {
+      return CustomAlert(
+        color: Colors.red[600],
+        title:
+            "Sayang sekali ${controller.isOperatorAction ? 'Keluarga ini' : 'Anda'} tidak mengalami peningkatan bahkan menurun dari tes sebelumnya. Dengan ini tes berakhir",
+      );
+    }
   }
 
   Text keluargaName(ScreeningTestResultController controller) {
@@ -201,45 +230,46 @@ class _KeluargaResultTestListViewState extends State<ResultTestListView> {
                     ),
                     const SizedBox(width: 10.0),
                     // Kesehatan Lingkungan
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.all(14.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          color: Colors.blue[600],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              Icons.health_and_safety_rounded,
-                              color: Colors.white,
-                              size: 64.0,
-                            ),
-                            const SizedBox(height: 16.0),
-                            Text(
-                              controller.showKesehatan(
-                                  test.kesehatanLingkungan.isHealthy,
-                                  test.kesehatanLingkungan.nilaiTotal
-                                      .toString()),
-                              style: const TextStyle(
+                    if (test.kesehatanLingkungan != null)
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.all(14.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            color: Colors.blue[600],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(
+                                Icons.health_and_safety_rounded,
                                 color: Colors.white,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
+                                size: 64.0,
                               ),
-                            ),
-                            const SizedBox(height: 8.0),
-                            const Text(
-                              "Kesehatan Lingkungan",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14.0,
+                              const SizedBox(height: 16.0),
+                              Text(
+                                controller.showKesehatan(
+                                    test.kesehatanLingkungan!.isHealthy,
+                                    test.kesehatanLingkungan!.nilaiTotal
+                                        .toString()),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                          ],
+                              const SizedBox(height: 8.0),
+                              const Text(
+                                "Kesehatan Lingkungan",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14.0,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ),

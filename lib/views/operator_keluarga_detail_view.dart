@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:client/components/operator_navbar.dart';
 import 'package:client/models/screening_test_result_model.dart';

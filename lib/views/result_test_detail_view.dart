@@ -70,15 +70,21 @@ class _ResultTestDetailViewState extends State<ResultTestDetailView> {
                           margin: const EdgeInsets.only(top: 30.0),
                           child: detailKemandirian(controller, step),
                         ),
-                        Container(
-                          padding: const EdgeInsets.all(24.0),
-                          margin: const EdgeInsets.only(top: 30.0),
-                          child: detailKesehatan(controller, step),
-                        ),
+                        if (controller.testDetail!.screeningTest
+                                .kesehatanLingkungan !=
+                            null)
+                          Container(
+                            padding: const EdgeInsets.all(24.0),
+                            margin: const EdgeInsets.only(top: 30.0),
+                            child: detailKesehatan(controller, step),
+                          ),
                       ],
                     ),
                   ),
-                  _buildDot(2),
+                  if (controller
+                          .testDetail!.screeningTest.tingkatKemandirian.step <
+                      2)
+                    _buildDot(2),
                 ],
               ),
       ),
@@ -209,11 +215,11 @@ class _ResultTestDetailViewState extends State<ResultTestDetailView> {
           ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: controller.testDetail!.screeningTest.kesehatanLingkungan
+            itemCount: controller.testDetail!.screeningTest.kesehatanLingkungan!
                 .jawabanKesehatan!.length,
             itemBuilder: (context, index) {
               return _kesehatanLingkunganResult(
-                controller.testDetail!.screeningTest.kesehatanLingkungan
+                controller.testDetail!.screeningTest.kesehatanLingkungan!
                     .jawabanKesehatan![index],
                 index,
               );
@@ -228,8 +234,8 @@ class _ResultTestDetailViewState extends State<ResultTestDetailView> {
   }
 
   Column _calculateKesehatanLingkungan(
-      KesehatanLingkungan kesehatanLingkungan) {
-    int acumulateNilai = kesehatanLingkungan.jawabanKesehatan!
+      KesehatanLingkungan? kesehatanLingkungan) {
+    int acumulateNilai = kesehatanLingkungan!.jawabanKesehatan!
         .map((item) => item.kriteriaKesehatan.nilai)
         .fold(0, (a, b) => a + b);
     return Column(
