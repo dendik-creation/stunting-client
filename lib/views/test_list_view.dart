@@ -18,14 +18,13 @@ class _TestListViewState extends State<TestListView> {
       setState(() {
         tests = [
           'Tes kriteria kemandirian keluarga',
-          'Tes kesehatan lingkungan (sanitasi)',
         ];
       });
     } else {
       setState(() {
         tests = [
           'Tes kriteria kemandirian keluarga',
-          'Entri data anak yang sakit (pertama kali)',
+          'Entri data anak yang sakit',
           'Tes kesehatan lingkungan (sanitasi)',
         ];
       });
@@ -67,7 +66,7 @@ class _TestListViewState extends State<TestListView> {
                     height: 5.0,
                   ),
                   Text(
-                    "Ada ${tests.length.toString()} Form yang akan Anda jalani : ",
+                    "Ada ${tests.length.toString()} form tes yang akan Anda jalani : ",
                     style: const TextStyle(fontSize: 18.0),
                     textAlign: TextAlign.start,
                   ),

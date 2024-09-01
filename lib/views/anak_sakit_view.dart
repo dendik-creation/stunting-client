@@ -1,4 +1,3 @@
-
 import 'package:client/components/custom_alert.dart';
 import 'package:client/controllers/anak_sakit_controller.dart';
 import 'package:client/utils/theme.dart';
@@ -234,7 +233,7 @@ class _AnakSakitViewState extends State<AnakSakitView> {
               var selectedValue = items
                   .firstWhere((item) => item['label'] == selected)!['value'];
               controller.dropdownHandleChange(key, selectedValue);
-              if (mounted) {
+              if (mounted == true) {
                 setState(() {
                   _dropdownControllers[key]!.value = selected;
                 });

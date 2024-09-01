@@ -37,7 +37,7 @@ class Keluarga {
   final String noTelp;
   final int isApproved;
   final int isFreeStunting;
-  final int puskesmasId;
+  final int? puskesmasId;
   final Puskesmas puskesmas;
 
   Keluarga({
@@ -51,7 +51,7 @@ class Keluarga {
     required this.noTelp,
     required this.isApproved,
     required this.isFreeStunting,
-    required this.puskesmasId,
+    this.puskesmasId,
     required this.puskesmas,
   });
 
@@ -192,13 +192,13 @@ class TestListData {
   final int step;
   final String tanggal;
   final TingkatKemandirian tingkatKemandirian;
-  final KesehatanLingkungan kesehatanLingkungan;
+  final KesehatanLingkungan? kesehatanLingkungan;
 
   TestListData({
     required this.step,
     required this.tanggal,
     required this.tingkatKemandirian,
-    required this.kesehatanLingkungan,
+    this.kesehatanLingkungan,
   });
 
   factory TestListData.fromJson(Map<String, dynamic> json) {
@@ -207,8 +207,9 @@ class TestListData {
       tanggal: json['tanggal'],
       tingkatKemandirian:
           TingkatKemandirian.fromJson(json['tingkat_kemandirian']),
-      kesehatanLingkungan:
-          KesehatanLingkungan.fromJson(json['kesehatan_lingkungan']),
+      kesehatanLingkungan: json['kesehatan_lingkungan'] != null
+          ? KesehatanLingkungan.fromJson(json['kesehatan_lingkungan'])
+          : null,
     );
   }
 
@@ -217,7 +218,7 @@ class TestListData {
       'step': step,
       'tanggal': tanggal,
       'tingkat_kemandirian': tingkatKemandirian.toJson(),
-      'kesehatan_lingkungan': kesehatanLingkungan.toJson(),
+      'kesehatan_lingkungan': kesehatanLingkungan?.toJson(),
     };
   }
 }
@@ -403,26 +404,28 @@ class KomponenKesehatan {
 
 class TestDetailData {
   final TingkatKemandirian tingkatKemandirian;
-  final KesehatanLingkungan kesehatanLingkungan;
+  final KesehatanLingkungan? kesehatanLingkungan;
 
   TestDetailData({
     required this.tingkatKemandirian,
-    required this.kesehatanLingkungan,
+    this.kesehatanLingkungan,
   });
 
   factory TestDetailData.fromJson(Map<String, dynamic> json) {
     return TestDetailData(
       tingkatKemandirian:
           TingkatKemandirian.fromJson(json['tingkat_kemandirian']),
-      kesehatanLingkungan:
-          KesehatanLingkungan.fromJson(json['kesehatan_lingkungan']),
+      kesehatanLingkungan: json['kesehatan_lingkungan'] != null
+          ? KesehatanLingkungan.fromJson(json['kesehatan_lingkungan'])
+          : null,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'tingkat_kemandirian': tingkatKemandirian.toJson(),
-      'kesehatan_lingkungan': kesehatanLingkungan.toJson(),
+      if (kesehatanLingkungan != null)
+        'kesehatan_lingkungan': kesehatanLingkungan?.toJson(),
     };
   }
 }
