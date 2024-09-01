@@ -107,7 +107,7 @@ class _KeluargaResultTestListViewState extends State<ResultTestListView> {
         int.parse(testList[1].tingkatKemandirian.tingkatan)) {
       return CustomAlert(
         title:
-            "${controller.isOperatorAction ? 'Keluarga ini' : 'Anda'} mengalami peningkatan dari tes sebelumnya. Dengan ini tes  berhasil dan berakhir.",
+            "${controller.isOperatorAction ? 'Keluarga ini' : 'Anda'} mengalami peningkatan dari tes sebelumnya. Dengan ini tes berhasil dan berakhir.",
       );
     } else if (int.parse(testList[1].tingkatKemandirian.tingkatan) ==
         int.parse(testList[0].tingkatKemandirian.tingkatan)) {

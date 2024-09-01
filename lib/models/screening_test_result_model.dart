@@ -37,7 +37,7 @@ class Keluarga {
   final String noTelp;
   final int isApproved;
   final int isFreeStunting;
-  final int puskesmasId;
+  final int? puskesmasId;
   final Puskesmas puskesmas;
 
   Keluarga({
@@ -51,7 +51,7 @@ class Keluarga {
     required this.noTelp,
     required this.isApproved,
     required this.isFreeStunting,
-    required this.puskesmasId,
+    this.puskesmasId,
     required this.puskesmas,
   });
 

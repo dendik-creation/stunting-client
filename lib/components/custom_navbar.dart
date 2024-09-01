@@ -17,6 +17,12 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
     with TickerProviderStateMixin {
   late int _currentIndex;
   List<String> tabList = ['Beranda', 'Anak Sakit', 'Hasil Tes', 'Buku Saku'];
+  List<IconData> iconList = [
+    Icons.home,
+    Icons.child_care_rounded,
+    Icons.track_changes_rounded,
+    Icons.menu_book_rounded
+  ];
   MotionTabBarController? _motionTabBarController;
   @override
   void initState() {
@@ -39,7 +45,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
         Navigator.of(context).pushNamed('/home-keluarga');
         break;
       case 1:
-        Navigator.of(context).pushNamed('/anak-sakit');
+        Navigator.of(context).pushNamed('/result-anak-sakit');
         break;
       case 2:
         Navigator.of(context).pushNamed('/result-test-list');
@@ -56,12 +62,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar>
       labels: tabList,
       controller: _motionTabBarController,
       initialSelectedTab: tabList[_currentIndex],
-      icons: const [
-        Icons.home,
-        Icons.sick_rounded,
-        Icons.track_changes_rounded,
-        Icons.menu_book_rounded
-      ],
+      icons: iconList,
       tabIconColor: AppColors.green[500]!,
       tabSelectedColor: AppColors.green[600]!,
       textStyle: TextStyle(
