@@ -34,7 +34,7 @@ class AnakSakitController with ChangeNotifier {
   int get maxIndex => _maxIndex;
   bool? get onSubmitting => _onSubmitting;
   AnakSakitModel? get answerData => _answerData;
-  dynamic? get anakSakitResult => _anakSakitResult;
+  dynamic get anakSakitResult => _anakSakitResult;
 
   Future<void> fetchPenyakitList({int? keluargaId}) async {
     final currentKeluarga = await AuthUser.getData('keluarga_auth');

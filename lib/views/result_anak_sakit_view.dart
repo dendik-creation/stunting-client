@@ -1,12 +1,9 @@
-import 'dart:convert';
 
 import 'package:client/components/custom_navbar.dart';
 import 'package:client/components/operator_navbar.dart';
 import 'package:client/controllers/anak_sakit_controller.dart';
-import 'package:client/utils/constant.dart';
 import 'package:client/utils/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class ResultAnakSakitView extends StatefulWidget {
