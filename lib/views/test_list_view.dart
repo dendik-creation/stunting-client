@@ -24,7 +24,7 @@ class _TestListViewState extends State<TestListView> {
       setState(() {
         tests = [
           'Tes kriteria kemandirian keluarga',
-          'Entri data anak yang sakit (pertama kali)',
+          'Entri data anak yang sakit',
           'Tes kesehatan lingkungan (sanitasi)',
         ];
       });

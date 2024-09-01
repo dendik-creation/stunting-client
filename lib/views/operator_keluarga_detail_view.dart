@@ -83,8 +83,14 @@ class _OperatorKeluargaDetailViewState
                         const SizedBox(
                           height: 20.0,
                         ),
+                        buildTile(
+                          Icons.edit,
+                          AppColors.green[600],
+                          "Edit data keluarga",
+                          "/edit-data-keluarga",
+                        ),
                         buildTile(Icons.child_care_rounded, Colors.blue[600],
-                            "Data Anak Sakit"),
+                            "Data Anak Sakit", "/result-anak-sakit"),
                         buildTile(
                             Icons.track_changes_rounded,
                             AppColors.green[600],
@@ -149,8 +155,8 @@ class _OperatorKeluargaDetailViewState
       borderOnForeground: false,
       shadowColor: Colors.transparent,
       child: ListTile(
-        tileColor: color?.withOpacity(0.7),
-        splashColor: color?.withOpacity(0.8),
+        tileColor: color?.withOpacity(0.8),
+        splashColor: color?.withOpacity(0.9),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),

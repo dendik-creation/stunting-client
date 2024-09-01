@@ -1,12 +1,16 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:client/components/custom_alert.dart';
 import 'package:client/components/custom_navbar.dart';
+import 'package:client/components/push_snackbar.dart';
 import 'package:client/controllers/home_controller.dart';
 import 'package:client/models/home_model.dart';
+import 'package:client/utils/constant.dart';
 import 'package:client/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -17,6 +21,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   bool isLoading = false;
+  bool isOpeningTest = false;
   String nextRouteIfNotComplete = "";
   dynamic keluargaAuth;
   final _controller = HomeController();
@@ -53,6 +58,30 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
+  Future<void> forceOpenNextTest() async {
+    setState(() {
+      isOpeningTest = true;
+    });
+    if (!mounted) return;
+    var response = await http.put(
+      Uri.parse(
+          "${Constants.apiBaseUrl}/keluarga/force-open-test/${keluargaAuth?['id']}"),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    );
+    if (response.statusCode == 200 && mounted) {
+      final data = jsonDecode(response.body);
+      PushSnackbar.liveSnackbar(data['message'], SnackbarType.success);
+      setState(() {
+        isOpeningTest = false;
+      });
+      Timer(const Duration(seconds: 1), () {
+        Navigator.of(context).pushReplacementNamed('/home-keluarga');
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -72,10 +101,15 @@ class _HomeViewState extends State<HomeView> {
           backgroundColor: Colors.white,
           leading: Container(
             margin: const EdgeInsets.only(left: 24.0),
-            child: CircleAvatar(
-              child: Image.asset(
-                'assets/images/global/avatar.png',
-                fit: BoxFit.cover,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed('/profile-keluarga', arguments: keluargaAuth);
+              },
+              child: Icon(
+                Icons.account_circle_rounded,
+                size: 40.0,
+                color: Colors.blue[700],
               ),
             ),
           ),
@@ -153,6 +187,14 @@ class _HomeViewState extends State<HomeView> {
                               latestScreening(),
                             const SizedBox(height: 24.0),
                             bukuSakuWdt(),
+                            const SizedBox(height: 24.0),
+                            if (keluargaAuth?['screening_test']
+                                        ?['current_step'] ==
+                                    1 &&
+                                keluargaAuth?['screening_test']?['is_complete']
+                                        ?['status'] ==
+                                    true)
+                              forceNextTestBtn(),
                           ],
                         )
                     ],
@@ -161,6 +203,35 @@ class _HomeViewState extends State<HomeView> {
               ),
         bottomNavigationBar: const CustomNavigationBar(currentIndex: 0),
       ),
+    );
+  }
+
+  ListTile forceNextTestBtn() {
+    return ListTile(
+      tileColor: Colors.red[100]?.withOpacity(0.7),
+      splashColor: Colors.red[100],
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      leading: Icon(
+        Icons.warning_rounded,
+        color: Colors.red[600],
+        size: 25.0,
+      ),
+      trailing: isOpeningTest
+          ? SizedBox(
+              width: 18,
+              height: 18,
+              child: CircularProgressIndicator(
+                strokeCap: StrokeCap.round,
+                color: Colors.red[600],
+              ))
+          : null,
+      title: const Text(
+        "Buka tes ke 2 sekarang (untuk demo)",
+        style: TextStyle(fontSize: 14.0),
+      ),
+      onTap: isOpeningTest ? null : () => forceOpenNextTest(),
     );
   }
 
@@ -180,8 +251,7 @@ class _HomeViewState extends State<HomeView> {
                     ?['tingkat_kemandirian'] !=
                 null)
               Text(
-                _controller.parseToIdDate(keluargaAuth?['screening_test']
-                    ?['test_result']?['tingkat_kemandirian']?['tanggal']),
+                "Tes ke-${keluargaAuth?['screening_test']?['current_step'].toString()} | ${_controller.parseToIdDate(keluargaAuth?['screening_test']?['test_result']?['tingkat_kemandirian']?['tanggal'])}",
                 style: const TextStyle(
                     fontSize: 18.0, fontWeight: FontWeight.w500),
               ),

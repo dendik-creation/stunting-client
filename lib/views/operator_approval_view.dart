@@ -52,6 +52,7 @@ class _OperatorApprovalViewState extends State<OperatorApprovalView> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: isLoading
             ? const Center(child: CircularProgressIndicator())
