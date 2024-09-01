@@ -1,7 +1,5 @@
-import 'dart:developer';
 
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
-import 'package:client/components/custom_navbar.dart';
 import 'package:client/components/operator_navbar.dart';
 import 'package:client/controllers/anak_sakit_controller.dart';
 import 'package:client/utils/theme.dart';

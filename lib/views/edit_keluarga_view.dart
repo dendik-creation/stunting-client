@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:client/components/push_snackbar.dart';
 import 'package:client/models/screening_test_result_model.dart';
