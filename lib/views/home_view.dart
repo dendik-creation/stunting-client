@@ -193,7 +193,8 @@ class _HomeViewState extends State<HomeView> {
                                     1 &&
                                 keluargaAuth?['screening_test']?['is_complete']
                                         ?['status'] ==
-                                    true)
+                                    true &&
+                                Constants.appMode == 'DEBUG')
                               forceNextTestBtn(),
                           ],
                         )
@@ -439,7 +440,7 @@ class _HomeViewState extends State<HomeView> {
   InkWell bukuSakuWdt() {
     return InkWell(
       onTap: () {
-        //
+        Navigator.of(context).pushNamed('/buku-saku');
       },
       splashColor: Colors.blue[300],
       borderRadius: BorderRadius.circular(14.0),
