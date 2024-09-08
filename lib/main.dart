@@ -7,6 +7,8 @@ import 'package:client/controllers/operator_home_controller.dart';
 import 'package:client/controllers/operator_login_controller.dart';
 import 'package:client/controllers/screening_test_result_controller.dart';
 import 'package:client/views/anak_sakit_view.dart';
+import 'package:client/views/buku_saku_detail_view.dart';
+import 'package:client/views/buku_saku_list_view.dart';
 import 'package:client/views/edit_anak_sakit_view.dart';
 import 'package:client/views/edit_keluarga_view.dart';
 import 'package:client/views/home_operator_view.dart';
@@ -67,26 +69,33 @@ class MyApp extends StatelessWidget {
       title: "Family Care Stunting",
       home: SplashView(),
       routes: {
+        // All
         '/onboarding': (context) => const OnboardingView(),
         '/register': (context) => const RegisterView(),
+        '/result-test-list': (context) => const ResultTestListView(),
+        '/result-test-detail': (context) => const ResultTestDetailView(),
+        '/result-anak-sakit': (context) => const ResultAnakSakitView(),
+
+        // Keluarga
         '/login-keluarga': (context) => const KeluargaLoginView(),
-        '/login-operator': (context) => const LoginOperatorView(),
         '/home-keluarga': (context) => const HomeView(),
         '/profile-keluarga': (context) => const KeluargaProfileView(),
+        '/test-list': (context) => const TestListView(),
+        '/test-kemandirian': (context) => const TestKemandirianView(),
+        '/test-anak-sakit': (context) => const AnakSakitView(),
+        '/test-kesehatan-lingkungan': (context) =>
+            const KesehatanLingkunganView(),
+        '/buku-saku': (context) => const BukuSakuListView(),
+        '/buku-saku-detail': (context) => const BukuSakuDetailView(),
+
+        // Operator
+        '/login-operator': (context) => const LoginOperatorView(),
         '/home-operator': (context) => const HomeOperatorView(),
         '/operator-keluarga-list': (context) =>
             const OperatorKeluargaListView(),
         '/operator-keluarga-detail': (context) =>
             const OperatorKeluargaDetailView(),
         '/operator-approval': (context) => const OperatorApprovalView(),
-        '/test-list': (context) => const TestListView(),
-        '/test-kemandirian': (context) => const TestKemandirianView(),
-        '/test-anak-sakit': (context) => const AnakSakitView(),
-        '/test-kesehatan-lingkungan': (context) =>
-            const KesehatanLingkunganView(),
-        '/result-test-list': (context) => const ResultTestListView(),
-        '/result-test-detail': (context) => const ResultTestDetailView(),
-        '/result-anak-sakit': (context) => const ResultAnakSakitView(),
         '/edit-anak-sakit': (context) => const EditAnakSakitView(),
         '/edit-data-keluarga': (context) => const EditKeluargaView(),
       },
