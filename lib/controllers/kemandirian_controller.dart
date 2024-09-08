@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:client/components/push_snackbar.dart';
 import 'package:client/utils/auth_user.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:client/models/kemandirian_models.dart';
@@ -57,9 +57,14 @@ class KemandirianController with ChangeNotifier {
   }
 
   void nextQuestion(BuildContext context) {
-    if (_selectedOpt == null ||
-        _selectedOpt == false ||
+    if (_selectedOpt == null) {
+      PushSnackbar.liveSnackbar(
+          "Isi jawaban terlebih dahulu", SnackbarType.warning);
+    } else if (_selectedOpt == false) {
+      storeKemandirian(context);
+    } else if (_selectedOpt == true &&
         _currentIndex + 1 == _kemandirianQuestion.length) {
+      saveAnswer();
       storeKemandirian(context);
     } else {
       saveAnswer();
@@ -71,42 +76,51 @@ class KemandirianController with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<String> whatNextTest() async {
+    final keluarga = await AuthUser.getData('keluarga_auth');
+    var response = await http.get(
+      Uri.parse("${Constants.apiBaseUrl}/anak-sakit/get/${keluarga?['id']}"),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    );
+    if (response.statusCode == 404) {
+      return "/test-anak-sakit";
+    } else {
+      return "/test-kesehatan-lingkungan";
+    }
+  }
+
   void storeKemandirian(context) async {
-    final currentKeluarga = await AuthUser.getData('keluarga_auth');
     _onSubmitting = true;
+    final currentKeluarga = await AuthUser.getData('keluarga_auth');
     final Map<String, dynamic> answerData = {
       'data': answers,
     };
-    final response = await http.post(
-        Uri.parse(
-            '${Constants.apiBaseUrl}/kemandirian/answer-question/${currentKeluarga?['id']}'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(answerData));
+    final response = await http
+        .post(
+            Uri.parse(
+                '${Constants.apiBaseUrl}/kemandirian/answer-question/${currentKeluarga?['id']}'),
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode(answerData))
+        .whenComplete(() {
+      _onSubmitting = false;
+      notifyListeners();
+    });
     if (response.statusCode == 200) {
-      Navigator.of(context).pushReplacementNamed('/test-list');
       final serverRes = jsonDecode(response.body);
-      Fluttertoast.showToast(
-        msg: serverRes['message'],
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: const Color(0xFF0a8b0d),
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      PushSnackbar.liveSnackbar(serverRes['message'], SnackbarType.success);
+      if (currentKeluarga!['screening_test']['current_step'] < 2) {
+        Navigator.of(context).pushReplacementNamed(await whatNextTest());
+      } else {
+        Navigator.of(context).pushReplacementNamed('/home-keluarga');
+      }
+      _currentIndex = 0;
+      _answers.clear();
+      _selectedOpt = null;
     } else {
       final serverRes = jsonDecode(response.body);
-      Fluttertoast.showToast(
-        msg: serverRes['message'],
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red[200],
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      PushSnackbar.liveSnackbar(serverRes['message'], SnackbarType.error);
     }
-    _onSubmitting = false;
-    _currentIndex = 0;
-    _selectedOpt = null;
-    notifyListeners();
   }
 }

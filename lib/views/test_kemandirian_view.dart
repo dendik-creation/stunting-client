@@ -1,3 +1,4 @@
+import 'package:client/components/custom_alert.dart';
 import 'package:client/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:client/controllers/kemandirian_controller.dart';
@@ -34,21 +35,25 @@ class _TestKemandirianViewState extends State<TestKemandirianView> {
             title: const Padding(
               padding: EdgeInsets.all(10.0),
               child: Text(
-                'Test Kriteria Kemandirian',
+                'Tes Kriteria Kemandirian',
                 style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
               ),
             )),
         backgroundColor: Colors.white,
         body: SafeArea(
-          child: Container(
-            margin: const EdgeInsets.only(top: 30.0),
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: controller.questions.isEmpty
-                  ? const Center(child: CircularProgressIndicator())
-                  : Column(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: controller.questions.isEmpty
+                ? const Center(child: CircularProgressIndicator())
+                : SingleChildScrollView(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const CustomAlert(
+                          title:
+                              "Jawab pertanyaan dengan jawaban yang paling sesuai",
+                        ),
+                        const SizedBox(height: 30.0),
                         Text(
                           (controller.currentIndex + 1).toString(),
                           style: TextStyle(
@@ -97,37 +102,41 @@ class _TestKemandirianViewState extends State<TestKemandirianView> {
                         ),
                       ],
                     ),
-            ),
+                  ),
           ),
         ),
         bottomNavigationBar: controller.questions.isEmpty
             ? const Text("")
             : Container(
-                height: 60,
-                width: double.infinity,
-                margin: const EdgeInsets.all(40.0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF12d516),
-                  ),
-                  onPressed: () {
-                    controller.nextQuestion(context);
-                  },
-                  child: controller.onSubmitting!
-                      ? const SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                          ),
-                        )
-                      : const Text(
-                          "Selanjutnya",
-                          style: TextStyle(
+                color: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                    vertical: 20.0, horizontal: 40.0),
+                child: SizedBox(
+                  height: 60,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF12d516),
+                    ),
+                    onPressed: () => controller.onSubmitting!
+                        ? null
+                        : controller.nextQuestion(context),
+                    child: controller.onSubmitting!
+                        ? const SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
                               color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600),
-                        ),
+                            ),
+                          )
+                        : const Text(
+                            "Berikutnya",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600),
+                          ),
+                  ),
                 ),
               ),
       ),

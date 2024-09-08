@@ -12,11 +12,19 @@ class KeluargaLoginView extends StatefulWidget {
 class _KeluargaLoginViewState extends State<KeluargaLoginView> {
   final _formKey = GlobalKey<FormState>();
   final _controller = KeluargaLoginController();
+  bool _onSubmitting = false;
 
-  void _loginCheck() {
+  void _loginCheck() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      _controller.login(context);
+      setState(() {
+        _onSubmitting = true;
+      });
+      await _controller.login(context).whenComplete(() {
+        setState(() {
+          _onSubmitting = false;
+        });
+      });
     }
   }
 
@@ -64,8 +72,7 @@ class _KeluargaLoginViewState extends State<KeluargaLoginView> {
                       height: 60,
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed:
-                            _controller.onSubmitting ? null : _loginCheck,
+                        onPressed: _onSubmitting ? null : _loginCheck,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF12d516),
                           padding: const EdgeInsets.symmetric(vertical: 14),
@@ -73,7 +80,7 @@ class _KeluargaLoginViewState extends State<KeluargaLoginView> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: _controller.onSubmitting
+                        child: _onSubmitting
                             ? const SizedBox(
                                 width: 24,
                                 height: 24,
@@ -108,10 +115,11 @@ class _KeluargaLoginViewState extends State<KeluargaLoginView> {
                                 .pushReplacementNamed('/register');
                           },
                           child: Text(
-                            "Atau Register",
+                            "Saya pertama kali menggunakan aplikasi",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 16,
-                                color: Colors.blue[300],
+                                color: Colors.green[300],
                                 fontWeight: FontWeight.bold),
                           ),
                         )

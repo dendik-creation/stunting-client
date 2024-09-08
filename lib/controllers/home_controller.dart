@@ -19,13 +19,14 @@ class HomeController {
       },
     );
     final result = jsonDecode(response.body);
+    await AuthUser.saveData('keluarga_auth', result['data']);
     return result['data'];
   }
 
   void pushLogout(BuildContext context, String targetKey) {
     AuthUser.removeData(targetKey);
     Timer(const Duration(milliseconds: 500), () {
-      Navigator.of(context).pushReplacementNamed('/login-keluarga');
+      Navigator.of(context).pushReplacementNamed('/onboarding');
     });
   }
 
@@ -40,5 +41,35 @@ class HomeController {
     DateTime date = DateTime.parse(dateString);
     String formattedDate = DateFormat("d MMMM y", "id_ID").format(date);
     return formattedDate;
+  }
+
+  String separateName(String name) {
+    List<String> splitName = name.split(" ");
+    if (splitName.length > 2) {
+      return "${splitName[0]} ${splitName[1]}";
+    } else {
+      return splitName[0];
+    }
+  }
+
+  String showKesehatan(int isHealthy, String nilai) {
+    String health = isHealthy == 1 ? 'Sehat' : 'Tidak Sehat';
+
+    return "$health ($nilai poin)";
+  }
+
+  Future<String> whatNextTest() async {
+    final keluarga = await AuthUser.getData('keluarga_auth');
+    var response = await http.get(
+      Uri.parse("${Constants.apiBaseUrl}/anak-sakit/get/${keluarga?['id']}"),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    );
+    if (response.statusCode == 404) {
+      return "/test-anak-sakit";
+    } else {
+      return "/test-kesehatan-lingkungan";
+    }
   }
 }
