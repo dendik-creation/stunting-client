@@ -19,19 +19,19 @@ class SplashController {
   }
 
   void goOnboarding(BuildContext context) {
-    Timer(const Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 2), () {
       Navigator.of(context).pushReplacementNamed('/onboarding');
     });
   }
 
   void keluargaHome(BuildContext context) {
-    Timer(const Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 2), () {
       Navigator.of(context).pushReplacementNamed('/home-keluarga');
     });
   }
 
   void operatorHome(BuildContext context) {
-    Timer(const Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 2), () {
       Navigator.of(context).pushReplacementNamed('/home-operator');
     });
   }
