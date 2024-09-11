@@ -21,6 +21,7 @@ import 'package:client/views/onboarding_view.dart';
 import 'package:client/views/operator_approval_view.dart';
 import 'package:client/views/operator_keluarga_detail_view.dart';
 import 'package:client/views/operator_keluarga_list_view.dart';
+import 'package:client/views/operator_profile_view.dart';
 import 'package:client/views/register_view.dart';
 import 'package:client/views/result_anak_sakit_view.dart';
 import 'package:client/views/result_test_detail_view.dart';
@@ -90,6 +91,7 @@ class MyApp extends StatelessWidget {
 
         // Operator
         '/login-operator': (context) => const LoginOperatorView(),
+        '/profile-operator': (context) => const OperatorProfileView(),
         '/home-operator': (context) => const HomeOperatorView(),
         '/operator-keluarga-list': (context) =>
             const OperatorKeluargaListView(),
