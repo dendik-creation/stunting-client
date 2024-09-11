@@ -1,12 +1,12 @@
 import 'package:client/utils/theme.dart';
 import 'package:flutter/material.dart';
 
-class KeluargaProfileView extends StatelessWidget {
-  const KeluargaProfileView({super.key});
+class OperatorProfileView extends StatelessWidget {
+  const OperatorProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final dynamic keluarga = ModalRoute.of(context)!.settings.arguments;
+    final dynamic operator = ModalRoute.of(context)!.settings.arguments;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -27,14 +27,14 @@ class KeluargaProfileView extends StatelessWidget {
                     height: 10.0,
                   ),
                   const Text(
-                    "Profil Keluarga Anda",
+                    "Profil Anda",
                     style:
                         TextStyle(fontSize: 32.0, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(
                     height: 30.0,
                   ),
-                  buildIdentity(keluarga),
+                  buildIdentity(operator),
                 ],
               ),
             ),
@@ -44,18 +44,14 @@ class KeluargaProfileView extends StatelessWidget {
     );
   }
 
-  Column buildIdentity(dynamic keluarga) {
+  Column buildIdentity(dynamic operator) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        buildField('NIK', keluarga['nik']),
-        buildField('Nama Lengkap', keluarga['nama_lengkap']),
-        buildField('No. Telepon', keluarga['no_telp']),
-        buildField('Desa',
-            "${keluarga['desa']} - RT ${keluarga['rt']} / RW ${keluarga['rw']}"),
-        buildField('Alamat Lengkap', keluarga['alamat']),
-        buildField(
-            'Puskesmas Pengampu', keluarga['puskesmas']['nama_puskesmas']),
+        buildField('Username', operator['username']),
+        buildField('Nama Lengkap', operator['nama_lengkap']),
+        buildField('Status Pekerjaan',
+            "Petugas (Operator) di Puskesmas ${operator['puskesmas']['nama_puskesmas']}"),
       ],
     );
   }

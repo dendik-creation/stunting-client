@@ -48,77 +48,83 @@ class _OnboardingViewState extends State<OnboardingView> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        body: Column(
-          children: [
-            Expanded(
-              child: PageView.builder(
-                controller: _controller,
-                itemCount: contents.length,
-                onPageChanged: (int index) {
-                  setState(() {
-                    currentIndex = index;
-                  });
-                },
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(40.0),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          GestureDetector(
-                            onTap: _operatorAction,
-                            child: Container(
-                              margin: const EdgeInsets.only(top: 20.0),
-                              child: Image.asset(
-                                contents[index].image,
-                                height: 400 /
-                                    MediaQuery.textScalerOf(context).scale(1.2),
-                                width: 400 /
-                                    MediaQuery.textScalerOf(context).scale(1.2),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                contents[index].title,
-                                textAlign: TextAlign.center,
-                                textScaler: TextScaler.linear(
-                                    MediaQuery.textScalerOf(context)
-                                        .scale(1.0)),
-                                style: const TextStyle(
-                                    fontSize: 35, fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                contents[index].description,
-                                textScaler: TextScaler.linear(
-                                    MediaQuery.textScalerOf(context)
-                                        .scale(1.0)),
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.normal,
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: PageView.builder(
+                  controller: _controller,
+                  itemCount: contents.length,
+                  onPageChanged: (int index) {
+                    setState(() {
+                      currentIndex = index;
+                    });
+                  },
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(40.0),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                              onTap: _operatorAction,
+                              child: Container(
+                                margin: const EdgeInsets.only(top: 20.0),
+                                child: Image.asset(
+                                  contents[index].image,
+                                  height: 400 /
+                                      MediaQuery.textScalerOf(context)
+                                          .scale(1.2),
+                                  width: 400 /
+                                      MediaQuery.textScalerOf(context)
+                                          .scale(1.2),
                                 ),
                               ),
-                            ],
-                          )
-                        ],
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  contents[index].title,
+                                  textAlign: TextAlign.center,
+                                  textScaler: TextScaler.linear(
+                                      MediaQuery.textScalerOf(context)
+                                          .scale(1.0)),
+                                  style: const TextStyle(
+                                      fontSize: 35,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  contents[index].description,
+                                  textScaler: TextScaler.linear(
+                                      MediaQuery.textScalerOf(context)
+                                          .scale(1.0)),
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-            buildDot(contents.length),
-            nextButton(contents.length)
-          ],
+              buildDot(contents.length),
+              nextButton(contents.length)
+            ],
+          ),
         ),
       ),
     );
