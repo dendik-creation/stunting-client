@@ -1,4 +1,3 @@
-
 import 'package:client/components/custom_navbar.dart';
 import 'package:client/components/operator_navbar.dart';
 import 'package:client/controllers/anak_sakit_controller.dart';
@@ -70,17 +69,27 @@ class _ResultAnakSakitViewState extends State<ResultAnakSakitView> {
                           const SizedBox(
                             height: 30.0,
                           ),
-                          if (keluargaId != null)
+                          if (keluargaId != null &&
+                              controller.anakSakitResult != null)
                             buildTile(
                                 Icons.edit_note_rounded,
                                 Colors.blue[600],
                                 "Edit data anak sakit",
                                 "/edit-anak-sakit",
                                 keluargaId),
-                          const SizedBox(
-                            height: 20.0,
-                          ),
-                          buildIdentity(controller.anakSakitResult),
+                          if (controller.anakSakitResult != null)
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                          if (controller.anakSakitResult != null)
+                            buildIdentity(controller.anakSakitResult)
+                          else
+                            Text(
+                              keluargaId != null
+                                  ? 'Keluarga ini belum mengisi form anak sakit'
+                                  : 'Anda belum mengisi form anak sakit pada test pertama',
+                              style: const TextStyle(fontSize: 17.0),
+                            ),
                         ],
                       ),
                     ),

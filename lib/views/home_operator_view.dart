@@ -65,10 +65,16 @@ class _HomeOperatorViewState extends State<HomeOperatorView> {
           backgroundColor: Colors.white,
           leading: Container(
             margin: const EdgeInsets.only(left: 24.0),
-            child: Icon(
-              Icons.account_circle_rounded,
-              size: 40.0,
-              color: Colors.blue[700],
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushNamed('/profile-operator',
+                    arguments: operatorAuth?['user']);
+              },
+              child: Icon(
+                Icons.account_circle_rounded,
+                size: 40.0,
+                color: Colors.blue[700],
+              ),
             ),
           ),
           actions: [
