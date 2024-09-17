@@ -26,7 +26,7 @@ class _BukuSakuDetailViewState extends State<BukuSakuDetailView> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          backgroundColor: Colors.blue[800],
+          backgroundColor: Colors.green[800],
           foregroundColor: Colors.white,
           title: Text(
             dataDetail!.title,
