@@ -78,7 +78,17 @@ flutter:
     - assets/images/onboarding/1.png
     - assets/images/onboarding/2.png
     - assets/images/onboarding/3.png
-    - assets/pdf/example.pdf
+    - assets/pdf/1.pdf
+    - assets/pdf/2.pdf
+    - assets/pdf/3.pdf
+    - assets/pdf/4.pdf
+    - assets/pdf/5.pdf
+    - assets/pdf/6.pdf
+    - assets/pdf/7.pdf
+    - assets/pdf/8.pdf
+    - assets/pdf/9.pdf
+    - assets/pdf/10.pdf
+    - assets/pdf/11.pdf
     - assets/images/icon/app_icon.png
     - assets/images/icon/splash_icon.png
 

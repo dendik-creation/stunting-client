@@ -1,6 +1,7 @@
 import 'package:client/components/custom_navbar.dart';
 import 'package:client/controllers/buku_saku_controller.dart';
 import 'package:client/models/buku_saku_model.dart';
+import 'package:client/utils/theme.dart';
 import 'package:flutter/material.dart';
 
 class BukuSakuListView extends StatefulWidget {
@@ -54,7 +55,8 @@ class _BukuSakuListViewState extends State<BukuSakuListView> {
                     child: ListView.builder(
                       itemBuilder: (context, index) => buildTile(
                           title: dataList[index].title,
-                          slug: dataList[index].slug),
+                          slug: dataList[index].slug,
+                          index: index),
                       itemCount: dataList.length,
                     ),
                   )
@@ -68,29 +70,33 @@ class _BukuSakuListViewState extends State<BukuSakuListView> {
     );
   }
 
-  Card buildTile({String? title, String? slug}) {
+  Card buildTile({String? title, String? slug, int? index}) {
     return Card(
       margin: const EdgeInsets.only(bottom: 15.0),
       borderOnForeground: false,
       shadowColor: Colors.transparent,
       child: ListTile(
-        tileColor: Colors.blue[600]?.withOpacity(0.9),
-        splashColor: Colors.blue[300],
+        tileColor: index! % 2 == 0
+            ? Colors.blue[300]?.withOpacity(0.2)
+            : AppColors.green[300]?.withOpacity(0.2),
+        splashColor: index % 2 == 0 ? Colors.blue[300] : AppColors.green[300],
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
-        leading: const Icon(
-          Icons.abc_rounded,
-          color: Colors.white,
+        leading: Icon(
+          Icons.book_rounded,
+          color: index % 2 == 0 ? Colors.blue[600] : AppColors.green[600],
           size: 32.0,
         ),
         title: Text(
           title!,
-          style: const TextStyle(fontSize: 14.0, color: Colors.white),
+          style: TextStyle(
+              fontSize: 14.0,
+              color: index % 2 == 0 ? Colors.blue[600] : AppColors.green[600]),
         ),
-        trailing: const Icon(
+        trailing: Icon(
           Icons.chevron_right_rounded,
-          color: Colors.white,
+          color: index % 2 == 0 ? Colors.blue[600] : AppColors.green[600],
           size: 25.0,
         ),
         onTap: () {
