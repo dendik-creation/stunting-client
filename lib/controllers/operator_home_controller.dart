@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:client/models/home_operator_model.dart';
 import 'package:client/utils/auth_user.dart';
 import 'package:client/utils/constant.dart';
+import 'package:client/views/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -45,7 +46,9 @@ class OperatorHomeController with ChangeNotifier {
   void directLogout(BuildContext context, String targetKey) {
     AuthUser.removeData(targetKey)
         // ignore: use_build_context_synchronously
-        .then((_) => Navigator.of(context).pushReplacementNamed('/onboarding'));
+        .then((_) => Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => SplashView()),
+            ));
   }
 
   void pushLogout(BuildContext context, String targetKey) async {
@@ -56,7 +59,9 @@ class OperatorHomeController with ChangeNotifier {
 
     Timer(const Duration(milliseconds: 500), () {
       AuthUser.removeData(targetKey);
-      Navigator.of(context).pushReplacementNamed('/onboarding');
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => SplashView()),
+      );
     });
 
     notifyListeners();

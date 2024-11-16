@@ -77,29 +77,31 @@ class _BukuSakuListViewState extends State<BukuSakuListView> {
       shadowColor: Colors.transparent,
       child: ListTile(
         tileColor: index! % 2 == 0
-            ? Colors.blue[300]?.withOpacity(0.2)
-            : AppColors.green[300]?.withOpacity(0.2),
+            ? Colors.blue[300]?.withOpacity(0.15)
+            : AppColors.green[300]?.withOpacity(0.15),
         splashColor: index % 2 == 0 ? Colors.blue[300] : AppColors.green[300],
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
         leading: Icon(
           Icons.book_rounded,
-          color: index % 2 == 0 ? Colors.blue[600] : AppColors.green[600],
+          color: index % 2 == 0 ? Colors.blue[700] : AppColors.green[700],
           size: 32.0,
         ),
         title: Text(
           title!,
           style: TextStyle(
               fontSize: 14.0,
-              color: index % 2 == 0 ? Colors.blue[600] : AppColors.green[600]),
+              color: index % 2 == 0 ? Colors.blue[700] : AppColors.green[700]),
         ),
         trailing: Icon(
           Icons.chevron_right_rounded,
-          color: index % 2 == 0 ? Colors.blue[600] : AppColors.green[600],
+          color: index % 2 == 0 ? Colors.blue[700] : AppColors.green[700],
           size: 25.0,
         ),
-        onTap: () {
+        onTap: () async {
+          await Future.delayed(const Duration(milliseconds: 400));
+          // ignore: use_build_context_synchronously
           Navigator.pushNamed(context, "/buku-saku-detail", arguments: slug);
         },
       ),

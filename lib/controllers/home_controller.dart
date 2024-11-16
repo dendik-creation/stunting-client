@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:client/utils/auth_user.dart';
 import 'package:client/utils/constant.dart';
+import 'package:client/views/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -26,7 +27,9 @@ class HomeController {
   void pushLogout(BuildContext context, String targetKey) {
     AuthUser.removeData(targetKey);
     Timer(const Duration(milliseconds: 500), () {
-      Navigator.of(context).pushReplacementNamed('/onboarding');
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => SplashView()),
+      );
     });
   }
 
