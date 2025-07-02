@@ -1,0 +1,2 @@
+D:/projects/family_care_stunting/client/android/app/.cxx/Debug/1j6j3d51/x86/CMakeFiles/edit_cache.dir
+D:/projects/family_care_stunting/client/android/app/.cxx/Debug/1j6j3d51/x86/CMakeFiles/rebuild_cache.dir
